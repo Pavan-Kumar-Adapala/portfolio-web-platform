@@ -5,11 +5,17 @@ on:
     types:
       - completed
     branches: [Prod]
+
+env:
+  RUN_S3_DEPLOY: false # Set to 'true' to enable S3 deployment
+
 permissions:
   id-token: write
 
+
 jobs:
     update_s3_bucket:
+        if: env.RUN_S3_DEPLOY == 'true'
         name: Update S3 Bucket floders and files
         runs-on: ubuntu-latest
         steps:

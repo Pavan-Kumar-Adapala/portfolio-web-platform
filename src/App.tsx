@@ -14,10 +14,6 @@ function App() {
   const HomePage = () => (
     <div className="min-h-screen bg-gray-900">
       <Hero />
-      <About />
-      <Skills />
-      <Experience />
-      <Projects />
       <Contact />
       <Footer />
     </div>
