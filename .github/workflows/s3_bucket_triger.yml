@@ -5,8 +5,11 @@ on:
     types:
       - completed
     branches: [Prod]
+
+
 permissions:
   id-token: write
+
 
 jobs:
     update_s3_bucket:
