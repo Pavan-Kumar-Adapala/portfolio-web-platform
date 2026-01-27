@@ -31,6 +31,31 @@ function App() {
     </div>
   );
 
+  // Skills page
+  const SkillsPage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <Skills />
+      <Footer />
+    </div>
+  );
+
+  // Experience page
+  const ExperiencePage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <Experience />
+      <Footer />
+    </div>
+  );
+
+  // Projects page
+  const ProjectsPage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <Projects />
+      <Footer />
+    </div>
+  );
+
+
   // Contact page
   const ContactPage = () => (
     <div className="min-h-screen bg-gray-900">
@@ -45,6 +70,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/skills" element={<SkillsPage />} />
+        <Route path="/experience" element={<ExperiencePage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </div>
