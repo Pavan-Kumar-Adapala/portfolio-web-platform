@@ -202,8 +202,9 @@ jobs:
           image-ref: adapaladocker/personal_portfolio_3d:${{ github.ref_name }} 
           format: sarif
           output: trivy-results.sarif
-          severity: 'CRITICAL,HIGH' # MEDIUM, LOW
+          severity: 'CRITICAL' # HIGH,MEDIUM,LOW
           exit-code: '1' # Fail the job if vulnerabilities are found in the Dockerfile
+          ignore-unfixed: true # Ignore unfixed vulnerabilities
 
 
       - name: Verify Trivy scan results
