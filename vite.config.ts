@@ -6,6 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   base: '/', // or '/Personal_portfolio_3d_animation/' if using GitHub Pages without a custom domain
+  publicDir: 'public', // Explicitly specify the public directory
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
