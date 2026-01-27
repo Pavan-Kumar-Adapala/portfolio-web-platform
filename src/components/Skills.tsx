@@ -120,7 +120,7 @@ const Skills = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          className="text-center mb-10 mt-20"
         >
           <h2 className="text-3xl font-bold text-white">Skills</h2>
           <p className="text-gray-400 text-sm">
