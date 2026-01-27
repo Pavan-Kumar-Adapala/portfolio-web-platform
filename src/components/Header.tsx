@@ -63,32 +63,35 @@ const Header = () => {
               </motion.button>
             </Link>
 
-            <motion.button
-              onClick={() => scrollToSection('skills')}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Skills
-            </motion.button>
+            <Link to="/skills">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Skills
+              </motion.button>
+            </Link>
 
-            <motion.button
-              onClick={() => scrollToSection('experience')}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Experience
-            </motion.button>
+            <Link to="/experience">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Experience
+              </motion.button>
+            </Link>
 
-            <motion.button
-              onClick={() => scrollToSection('projects')}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Projects
-            </motion.button>
+            <Link to="/projects">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Projects
+              </motion.button>
+            </Link>
 
             <Link to="/contact">
               <motion.button
