@@ -43,16 +43,8 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"
-      style={{
-        backgroundImage: 'url(/skills/Skills_chain.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Dark overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-black/50"></div>
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
@@ -142,28 +134,22 @@ const Hero = () => {
           >
             Passionate about cloud, CI/CD automation, containerization, and building scalable solutions that create real-world impact.
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() =>
-                document
-                  .getElementById('contact')
-                  ?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className="border-2 border-gray-400 text-gray-300 px-8 py-3 rounded-lg font-medium hover:border-white hover:text-white transition-all"
-            >
-              Get In Touch
-            </motion.button>
-          </motion.div>
         </motion.div>
       </div>
+
+      {/* Background Image - rendered after content */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/skills/Skills_chain.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      ></div>
+
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 z-0 bg-black/30"></div>
 
       {/* Scroll Indicator */}
       <motion.div
