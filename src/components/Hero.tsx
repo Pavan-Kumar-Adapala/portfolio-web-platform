@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Cloud, GitBranch, Database, Package } from 'lucide-react';
 
@@ -44,7 +44,15 @@ const Hero = () => {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"
+      style={{
+        backgroundImage: 'url(/skills/Skills_chain.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
     >
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-black/50"></div>
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
