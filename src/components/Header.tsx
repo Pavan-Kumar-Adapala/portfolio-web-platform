@@ -1,12 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // If we're on home page, scroll to section
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -33,28 +39,66 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
           >
-            Portfolio
+            <Link to="/">Portfolio</Link>
           </motion.div>
 
           <div className="hidden md:flex items-center space-x-8">
-            {[
-              'home',
-              'about',
-              'skills',
-              'experience',
-              'projects',
-              'contact',
-            ].map((item) => (
+            <Link to="/">
               <motion.button
-                key={item}
-                onClick={() => scrollToSection(item)}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="text-gray-300 hover:text-white transition-colors capitalize"
+                className="text-gray-300 hover:text-white transition-colors"
               >
-                {item}
+                Home
               </motion.button>
-            ))}
+            </Link>
+
+            <Link to="/about">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                About
+              </motion.button>
+            </Link>
+
+            <motion.button
+              onClick={() => scrollToSection('skills')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Skills
+            </motion.button>
+
+            <motion.button
+              onClick={() => scrollToSection('experience')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Experience
+            </motion.button>
+
+            <motion.button
+              onClick={() => scrollToSection('projects')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Projects
+            </motion.button>
+
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Contact
+              </motion.button>
+            </Link>
 
             <motion.button
               onClick={handleResumeDownload}

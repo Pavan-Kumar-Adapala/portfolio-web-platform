@@ -591,4 +591,242 @@ permissions:
       - name: Sync files to S3 bucket
         run: |
           aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude ".git/*" --delete
+
 ```
+
+---
+
+To break your single-page application into separate pages for "About" and "Contact," use **React Router** to manage the routing between these components.
+
+
+Step by step:
+
+1. Install React Router: If you haven't already, you need to install React Router.
+
+  npm install react-router-dom
+
+2. Set Up Routing: Modify your main application file (main.tsx) to include routing.
+
+3. Create Routes: Define routes for the "About" and "Contact" components in (App.tsx)
+
+
+main.tsx
+
+````
+import { BrowserRouter as Router } from 'react-router-dom';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </StrictMode>
+);
+
+````
+
+App.tsx
+
+````
+import { Routes, Route } from 'react-router-dom';
+
+function App() {
+  // Home page with all sections
+  const HomePage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <Hero />
+      <About />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  );
+
+  // About page
+  const AboutPage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <About />
+      <Footer />
+    </div>
+  );
+
+  // Contact page
+  const ContactPage = () => (
+    <div className="min-h-screen bg-gray-900">
+      <Contact />
+      <Footer />
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-900">
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App;
+
+````
+
+Due to above changes, I change the src/components/Header.tsx
+
+Header.tsx => import { Link, useLocation } from 'react-router-dom';
+
+```
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Download } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+
+const Header = () => {
+  const location = useLocation();
+
+  const scrollToSection = (sectionId: string) => {
+    // If we're on home page, scroll to section
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleResumeDownload = () => {
+    // In a real application, this would download the actual resume file
+    const link = document.createElement('a');
+    link.href = 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/files/Lebenslauf_Adapala.pdf'; // Replace with actual resume path
+    link.download = 'PavanKumar_Adapala_DevOps_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800"
+    >
+      <nav className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+          >
+            <Link to="/">Portfolio</Link>
+          </motion.div>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Home
+              </motion.button>
+            </Link>
+
+            <Link to="/about">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                About
+              </motion.button>
+            </Link>
+
+            <motion.button
+              onClick={() => scrollToSection('skills')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Skills
+            </motion.button>
+
+            <motion.button
+              onClick={() => scrollToSection('experience')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Experience
+            </motion.button>
+
+            <motion.button
+              onClick={() => scrollToSection('projects')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Projects
+            </motion.button>
+
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Contact
+              </motion.button>
+            </Link>
+
+            <motion.button
+              onClick={handleResumeDownload}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 rounded-lg text-white font-medium hover:from-blue-600 hover:to-purple-600 transition-all"
+            >
+              <Download size={16} />
+              <span>Resume</span>
+            </motion.button>
+          </div>
+        </div>
+      </nav>
+    </motion.header>
+  );
+};
+
+export default Header;
+
+````
+
+
+Summary of Changes:
+
+Updated main.tsx - Wrapped the app with BrowserRouter to enable routing throughout the application.
+
+Updated App.tsx - Created three routes:
+
+  / (Home) - Shows all sections: Hero, About, Skills, Experience, Projects, Contact
+  /about - Shows only the About section
+  /contact - Shows only the Contact section
+  
+Updated Header.tsx - Added React Router Link components for navigation:
+
+  Home button links to /
+  About button links to /about
+  Contact button links to /contact
+  Skills, Experience, and Projects still use smooth scroll (only on home page)
+  Portfolio logo links back to home
+
+
+How it works:
+
+- Home Page (/): Displays all sections as before
+- About Page (/about): Dedicated page with just the About section
+- Contact Page (/contact): Dedicated page with just the Contact form
+- Navigation: Click the menu items to navigate between pages
+- Smart Scroll: Skills, Experience, and Projects sections still scroll on the home page but won't try to scroll on other pages
