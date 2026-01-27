@@ -38,9 +38,7 @@ const About = () => {
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="text-gray-300 text-lg leading-relaxed"
                 >
-                  Hi, I'm Pavan Kumar Adapala, a passionate DevOps Engineer with around 3 years of experience AWS cloud, 
-                  automating the software development lifecycle with CI/CD and open-source tools, and implementing observability 
-                  solutions.
+                  DevOps & MLOps Engineer with 3 years of experience delivering scalable, automated cloud and ML platforms that drive measurable business outcomes.
                 </motion.p>
 
                 <motion.p
@@ -51,10 +49,7 @@ const About = () => {
                   transition={{ duration: 0.8, delay: 0.6 }}
                   className="text-gray-300 text-lg leading-relaxed"
                 >
-                  I have experience in building scalable, secure, and efficient cloud
-                  solutions using Python and Bash scripting, AWS, and modern DevOps practices.
-                  My goal is to bridge the gap between development and
-                  operations, ensuring smooth and reliable software delivery.
+                  Designed and implemented data-driven CI/CD pipelines and GitOps workflows, cutting build failure root-cause identification by 30% and eliminating manual test artifact analysis. Built production-grade MLOps platforms for energy forecasting in industrial HVAC systems, achieving 95% prediction accuracy and enabling predictive energy management that reduced operational costs and optimized load shifting.
                 </motion.p>
 
                 <motion.p
@@ -65,9 +60,18 @@ const About = () => {
                   transition={{ duration: 0.8, delay: 0.8 }}
                   className="text-gray-300 text-lg leading-relaxed"
                 >
-                  Outside of optimizing infrastructure and writing automation scripts, 
-                  I am passionate about building my own projects to explore new tools and technologies, 
-                  while actively engaging with the DevOps community to share and grow knowledge.
+                  Integrated observability and security tools—Grafana, Prometheus, SonarQube—while provisioning highly available, disaster-resilient infrastructure on AWS with Terraform and CloudFormation. Developed containerized ML inference services with FastAPI and cloud deployment pipelines, ensuring end-to-end automation, reproducibility, and operational reliability.
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={
+                    isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }
+                  }
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                  className="text-gray-300 text-lg leading-relaxed"
+                >
+                  Passionate about exploring cloud-native technologies, automation frameworks, and open-source tools, with a focus on building solutions that solve real business problems and scale reliably in production.
                 </motion.p>
               </div>
 
