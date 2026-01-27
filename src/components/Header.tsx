@@ -1,20 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
-  const location = useLocation();
-
-  const scrollToSection = (sectionId: string) => {
-    // If we're on home page, scroll to section
-    if (location.pathname === '/') {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
 
   const handleResumeDownload = () => {
     // In a real application, this would download the actual resume file
