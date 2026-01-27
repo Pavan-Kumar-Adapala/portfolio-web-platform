@@ -25,7 +25,7 @@ jobs:
       - name: Download artifact from triggering workflow
         uses: actions/download-artifact@v5
         with:
-            name: vite-dist
+            name: dist
             path: ./dist
             github-token: ${{ github.token }} # if the workflow in the same repository, use the default token
             run-id: ${{ github.event.workflow_run.id }} # Use the run ID from the triggering workflow
