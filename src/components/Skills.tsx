@@ -153,7 +153,7 @@ const Skills = () => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <img
-                              src={`skills/${skill.img}`}
+                              src={`/skills/${skill.img}`}
                               alt={skill.name}
                               loading="lazy"
                               //className="w-10 h-10 object-contain hover:scale-105 transition"
