@@ -75,16 +75,9 @@ const Contact = () => {
       color: 'from-blue-500 to-cyan-500',
     },
     {
-      icon: Phone,
-      label: 'Phone',
-      value: '+49 15751763888',
-      href: 'tel:+4915751763888',
-      color: 'from-green-500 to-teal-500',
-    },
-    {
       icon: MapPin,
       label: 'Location',
-      value: '07747 Jena, Germany',
+      value: '70435 Stuttgart, Germany',
       href: '#',
       color: 'from-purple-500 to-pink-500',
     },
@@ -93,13 +86,13 @@ const Contact = () => {
   const socialLinks = [
     {
       icon: Linkedin,
-      href: 'https://www.linkedin.com/in/pavankumar-adapala/',
+      href: 'https://www.linkedin.com/in/pavanadapala/',
       label: 'LinkedIn',
       color: 'hover:text-blue-500',
     },
     {
       icon: Github,
-      href: 'https://github.com/Pavan-Kumar-Adapala',
+      href: 'https://github.com/Pavan-Kumar-Adapala/Pavan_Kumar_Adapala_github',
       label: 'GitHub',
       color: 'hover:text-gray-400',
     },
@@ -167,9 +160,6 @@ const Contact = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <h4 className="text-xl font-bold text-white mb-4">
-                Connect With Me
-              </h4>
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => (
                   <motion.a
@@ -195,6 +185,9 @@ const Contact = () => {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
+            <h3 className="text-2xl font-bold text-white mb-6">
+                Contact Form
+            </h3>
             <form
               onSubmit={handleSubmit}
               className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
