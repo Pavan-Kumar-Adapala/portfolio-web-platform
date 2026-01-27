@@ -15,55 +15,56 @@ const Experience = () => {
       location: 'Bietigheim-Bissingen, Germany',
       period: '02/2024 - 07/2024',
       description: [
-        'Thesis Topic: "Modelling concepts for forecasting the energy consumption in industrial paint shops"',
-        'Developed and evaluated batch and one-step-ahead forecasting models, achieving 95% accuracy in predicting energy consumption',
-        'Improved model performance by 15% using feature engineering and identification of key influencing features',
+        'Developed and evaluated ML-based load forecasting models (batch and one-step-ahead) using IIoT time-series data from automotive paint shop HVAC systems. These models enhanced Predictive Energy Management (PEM) by achieving 95% forecasting accuracy, accounting for weather-related uncertainties, and enabling proactive load shifting to reduce energy waste and operational costs.',
       ],
-      technologies: ['Python', 'Exploratory Data Analysis (EDA)', 'Time series forecasting', 'Data pipelines', 'Machine Learning (ML)', 
-        'Feature engineering', 'Data-driven decision making', 'Exclude commissioning period', 'Plausibility checks'],
-      achievements: '95% forecasting accuracy, 15% model performance improvement'
+      // technologies: ['Python', 'Exploratory Data Analysis (EDA)', 'Time series forecasting', 'Data pipelines', 'Machine Learning (ML)', 
+      //   'Feature engineering', 'Data-driven decision making', 'Exclude commissioning period', 'Plausibility checks'],
+      // achievements: '95% forecasting accuracy, 15% model performance improvement'
     },
     {
-      title: 'Software Integrator - Research Internship',
+      title: 'Software Integration and DevOps Intern',
       company: 'Robert Bosch GmbH',
       location: 'Stuttgart, Germany',
       period: '05/2023 - 01/2024',
       description: [
-        'Designed and optimized Jenkins pipelines to streamline CI/CD workflows for advanced driver-assistance (ADAS) parking system software',
-        'Developed data-driven automation strategies by integrating Python scripts with REST APIs, reducing debugging time by 30% and accelerating root cause analysis',
-        'Built a centralized Grafana dashboard for monitoring CI/CD builds across multiple projects, enabling data-driven release planning and performance insights',
-        'Co-developed a modular Python GUI for productivity KPI, improving team output by 15%',
-        'Developed an automated hardware management framework for assets management, saving 15.000 euros'
+        'Designed and optimized Jenkins-based CI/CD/CT pipelines with automated unit, integration, and system testing, improving build reliability and delivery efficiency for an autonomous parking system.',
+        'Designed and implemented data-driven Python automation to analyze test reports (unit, smoke, integration) and build artifacts, reducing debugging effort and accelerating root cause identification for CI/CD build failures.',
+        'Built a centralized monitoring solution using Grafana and PostgreSQL to collect and visualize development process KPIs across multiple projects, enabling data-driven release planning.',
+        'Collaborated with development and testing teams to ensure consistent and reliable firmware flashing processes across development and test environments.',
+        'Designed and implemented a Python-based analytics tool with ETL pipelines to collect, process, and visualize performance KPIs, supporting data-driven operational decisions.',
+        'Designed and developed an automated hardware asset management framework to improve traceability and operational efficiency, resulting in cost savings of approximately €15,000.'
       ],
-      technologies: ['Python(Tkinter, selenium, Pandas, Numpy, threading, logging)', 'Bash Scripting', 'Jenkins', 'Git & Bitbucket', 
-        'JFrog Artifactory', 'JIRA & Confluence', 'Grafana', 'PostgreSQL', 'RESTAPIs', 'WSL', 'Linux VM','ETL Pipeline', 'GUI Application',
-        'Data-driven'],
-      achievements: '30% reduction in debugging time, 15% improvement in team productivity'
+      // technologies: ['Python(Tkinter, selenium, Pandas, Numpy, threading, logging)', 'Bash Scripting', 'Jenkins', 'Git & Bitbucket', 
+      //   'JFrog Artifactory', 'JIRA & Confluence', 'Grafana', 'PostgreSQL', 'RESTAPIs', 'WSL', 'Linux VM','ETL Pipeline', 'GUI Application',
+      //   'Data-driven'],
+      // achievements: '30% reduction in debugging time, 15% improvement in team productivity'
     },
     {
       title: 'Trainee DevOps Engineer',
-      company: 'Ibexlabs Cloud Consulting Private Limited',
+      company: 'Ibexlabs Cloud Consulting Pvt. Ltd.',
       location: 'Hyderabad, India',
       period: '04/2021 - 09/2021',
       description: [
-        'Provisioned and managed AWS infrastructure using Terraform and CloudFormation, ensuring consistency and scalability',
-        'Developed custom CloudWatch dashboards and alerting systems to monitor application performance metrics and logs, enabling proactive incident response and minimizing downtime'
+        'Provisioned and managed AWS infrastructure using Infrastructure as Code (IaC)-Terraform and CloudFormation to support development and operations teams, ensuring scalable, repeatable deployments.',
+        'Developed custom CloudWatch dashboards and alerting systems by integrating open-source monitoring agents, enabling proactive application management, and reducing downtime.',
+        'Documented troubleshooting procedures in Confluence, enabling faster resolution of recurring issues and promoting team knowledge sharing.'
       ],
-      technologies: ['AWS', 'Python', 'Bash', 'Terraform', 'Ansible', 'Git & GitHub'],
-      achievements: 'Managing and monitoring client cloud solutions'
+      // technologies: ['AWS', 'Python', 'Bash', 'Terraform', 'Ansible', 'Git & GitHub'],
+      // achievements: 'Managing and monitoring client cloud solutions'
     },
     {
       title: 'Trainee Cloud Engineer',
-      company: 'Isuzu Motors India Private Limited',
+      company: 'Isuzu Motors India Pvt. Ltd.',
       location: 'Sri City, India',
       period: '06/2018 - 07/2019',
       description: [
-        'Contribute to cloud migration proof-of-concept project, reducing infrastructure costs by 25% using AWS Auto Scaling',
-        'Implemented CI/CD pipelines using Jenkins Master-Slave architecture to automate deployments on AWS, accelerating release cycles',
-        'Designed and deployed a scalable 3-tier AWS architecture to host a web application, ensuring high availability and fault tolerance'
+        'Contributed to cloud migration proof-of-concept (PoC) project, reducing infrastructure costs by 25% through implementation of scalable (Auto Scaling), production-ready cloud infrastructure.',
+        'Established GitHub repository standards including branch protection rules, mandatory CI checks before merges, and an optimized branching strategy, improving code quality and reducing integration issues across the team.',
+        'Implemented CI/CD pipelines using Jenkins Master-Slave architecture to automate deployments, distributing workloads for faster builds and accelerating release cycles.',
+        'Deployed the web application following 3-tier AWS architecture, ensuring secure, highly available (HA), and fault-tolerant systems.'
       ],
-      technologies: ['AWS Services', 'Networking', 'Secuirty', 'Python', 'Bash', 'Git & GitHub'],
-      achievements: 'Reduced data retrieval time by 30%, Reduced operational costs by 25%'
+      // technologies: ['AWS Services', 'Networking', 'Secuirty', 'Python', 'Bash', 'Git & GitHub'],
+      // achievements: 'Reduced data retrieval time by 30%, Reduced operational costs by 25%'
     }
   ];
 

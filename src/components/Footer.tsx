@@ -10,20 +10,6 @@ const Footer = () => {
     <footer className="bg-gray-900 border-t border-gray-800 py-12">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
-            >
-              Pavan Kumar Adapala
-            </motion.div>
-            <p className="text-gray-400">
-              DevOps Engineer passionate about cloud, automation (CI/CD), containerization, 
-              and building scalable solutions that make a difference.
-            </p>
-          </div>
-          
           {/* Quick Links */}
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
