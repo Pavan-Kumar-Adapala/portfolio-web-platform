@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -102,10 +101,6 @@ const Experience = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Professional Experience
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            My journey in DevOps and cloud engineering, building scalable infrastructure and 
-            streamlining development workflows
-          </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
@@ -170,7 +165,7 @@ const Experience = () => {
                     </div>
 
                     {/* Achievement Badge */}
-                    <motion.div
+                    {/* <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
@@ -178,7 +173,7 @@ const Experience = () => {
                     >
                       <TrendingUp size={16} className="text-green-400 mr-2" />
                       <span className="text-green-400 text-sm font-medium">{exp.achievements}</span>
-                    </motion.div>
+                    </motion.div> */}
                     
                     <ul className="space-y-2 mb-6">
                       {exp.description.map((item, i) => (
@@ -195,7 +190,7 @@ const Experience = () => {
                       ))}
                     </ul>
                     
-                    <div className="flex flex-wrap gap-2">
+                    {/* <div className="flex flex-wrap gap-2">
                       {exp.technologies.map((tech, i) => (
                         <motion.span
                           key={tech}
@@ -208,7 +203,7 @@ const Experience = () => {
                           {tech}
                         </motion.span>
                       ))}
-                    </div>
+                    </div> */}
                   </motion.div>
                 </div>
               </motion.div>
