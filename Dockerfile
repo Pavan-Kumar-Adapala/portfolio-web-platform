@@ -1,9 +1,8 @@
 # Here is a multistage Dockerfile for your Vite + React + TypeScript application:
 # Dockerfile
 # Use the official Node.js image as the base image for the build stage
-ARG NODE_VERSION=22-alpine3.22
+ARG NODE_VERSION=22-alpine
 FROM node:${NODE_VERSION} AS build
-RUN apk update && apk upgrade --no-cache
 # Label to identify the maintainer of the Dockerfile
 LABEL maintainer="Pavan Kumar Adapala"
 # Set the working directory inside the container
