@@ -19,8 +19,8 @@ const Header = () => {
   const handleResumeDownload = () => {
     // In a real application, this would download the actual resume file
     const link = document.createElement('a');
-    link.href = 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/files/Lebenslauf_Adapala.pdf'; // Replace with actual resume path
-    link.download = 'PavanKumar_Adapala_DevOps_Resume.pdf';
+    link.href = 'https://www.linkedin.com/in/pavanadapala/'; // Replace with actual resume path
+    link.download = 'Resume_Adapala.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
