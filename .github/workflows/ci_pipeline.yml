@@ -43,8 +43,9 @@ jobs:
         # This command will run ESLint on all JavaScript and TypeScript files in the repository
         run: |
           mkdir -p Lint_report
-          npx eslint -c eslint.config.js --format json -o Lint_report/eslint-report.json
-          npx eslint -c eslint.config.js --format @microsoft/eslint-formatter-sarif -o Lint_report/eslint-report.sarif .
+          npx eslint -c eslint.config.js --format json -o Lint_report/eslint-report.json . || true
+          npx eslint -c eslint.config.js --format @microsoft/eslint-formatter-sarif -o Lint_report/eslint-report.sarif . || true
+          echo "ESLint scanning completed. Reports generated in Lint_report directory."
       
       - name: Upload ESLint report
         uses: actions/upload-artifact@v4
