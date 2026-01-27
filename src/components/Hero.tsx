@@ -132,7 +132,7 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-gray-400 mb-12"
           >
-            DevOps Engineer with around 3 years of experience in Cloud and DevOps environments. Reduced CI/CD build failure root cause identification time by designing and implementing data-driven automation within CI/CD pipelines and GitOps workflows, minimizing manual investigation of test reports and build artifacts. Proven experience in integrating monitoring and security tools such as Grafana, Prometheus, and SonarQube, and in provisioning highly available and disaster-resilient infrastructure to deliver reliable platforms.
+            Passionate about cloud, CI/CD automation, containerization, and building scalable solutions that create real-world impact.
           </motion.div>
 
           <motion.div
