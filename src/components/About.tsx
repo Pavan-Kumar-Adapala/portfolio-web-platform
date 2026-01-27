@@ -86,7 +86,7 @@ const About = () => {
                   {/* Inner circle with profile image */}
                   <div className="w-full h-full bg-gray-800 rounded-full overflow-hidden flex items-center justify-center">
                     <img 
-                      src="images/profile.jpeg" 
+                      src="/images/profile.jpeg" 
                       alt="Profile" 
                       className="w-full h-full object-cover" 
                     />
