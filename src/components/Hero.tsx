@@ -43,117 +43,80 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative bg-gray-900"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+      {/* Content Section - Top */}
+      <div className="relative w-full pt-32 pb-12 bg-gray-900">
+        <div className="text-center px-6 max-w-4xl mx-auto">
           <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-20"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.2,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Floating 3D Icons */}
-      {floatingIcons.map(({ Icon, delay, x, y }, index) => (
-        <motion.div
-          key={index}
-          className="absolute text-blue-400/30"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.2, 1],
-            x: [x, x + 20, x],
-            y: [y, y - 20, y],
-            rotateY: [0, 180, 360],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            delay,
-          }}
-          style={{
-            left: `${50 + x}px`,
-            top: `${50 + y}px`,
-          }}
-        >
-          <Icon size={48} />
-        </motion.div>
-      ))}
-
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <motion.h1
-            className="text-5xl md:text-7xl font-bold text-white mb-6"
-            animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Pavan Kumar Adapala
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="text-xl md:text-2xl text-gray-300 mb-8 h-8"
+            transition={{ duration: 1 }}
           >
-            <span className="text-blue-400">{currentText}</span>
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              className="text-blue-400"
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold text-white mb-6"
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
-              |
-            </motion.span>
-          </motion.div>
+              Pavan Kumar Adapala
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="text-gray-400 mb-12"
-          >
-            Passionate about cloud, CI/CD automation, containerization, and building scalable solutions that create real-world impact.
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="text-xl md:text-2xl text-gray-300 mb-8 h-8"
+            >
+              <span className="text-blue-400">{currentText}</span>
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="text-blue-400"
+              >
+                |
+              </motion.span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6 }}
+              className="text-gray-400 text-lg"
+            >
+              Passionate about cloud, CI/CD automation, containerization, and building scalable solutions that create real-world impact.
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Background Image - rendered after content */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/skills/Skills_chain.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }}
-      ></div>
-
-      {/* Dark overlay to ensure text readability */}
-      <div className="absolute inset-0 z-0 bg-black/30"></div>
+      {/* Background Image Section - Full Screen */}
+      <div className="w-full bg-gray-900 relative overflow-hidden">
+        <img
+          src="/skills/Skills_chain.png"
+          alt="Skills Chain"
+          className="w-full h-auto object-cover block"
+          style={{
+            minHeight: '100vh',
+            filter: 'contrast(1.1) brightness(0.9)',
+            mixBlendMode: 'screen',
+          }}
+        />
+        {/* Dark overlay to match context background color */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundColor: 'rgba(224, 229, 240, 0.2)',
+            pointerEvents: 'none',
+            top: '0',
+            left: '0',
+            mixBlendMode: 'multiply',
+          }}
+        ></div>
+      </div>
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
