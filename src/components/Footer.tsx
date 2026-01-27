@@ -1,6 +1,7 @@
 //import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Code, Coffee,  } from 'lucide-react';
+import { Heart, Code, Coffee } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -27,21 +28,54 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <div className="space-y-2">
-              {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((link) => (
+              <Link to="/">
                 <motion.button
-                  key={link}
-                  onClick={() => {
-                    const element = document.getElementById(link.toLowerCase());
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
                   whileHover={{ x: 5 }}
                   className="block text-gray-400 hover:text-white transition-colors"
                 >
-                  {link}
+                  Home
                 </motion.button>
-              ))}
+              </Link>
+              <Link to="/about">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  About
+                </motion.button>
+              </Link>
+              <Link to="/skills">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  Skills
+                </motion.button>
+              </Link>
+              <Link to="/experience">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  Experience
+                </motion.button>
+              </Link>
+              <Link to="/projects">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  Projects
+                </motion.button>
+              </Link>
+              <Link to="/contact">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  Contact
+                </motion.button>
+              </Link>
             </div>
           </div>
           
@@ -50,8 +84,7 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Get In Touch</h3>
             <div className="space-y-2 text-gray-400">
               <p>📧 pavankumar.adapala.msc@email.com</p>
-              <p>📱 +4915751763888</p>
-              <p>📍 07747 Jena, Germany</p>
+              <p>📍 70435 Stuttgart, Germany</p>
             </div>
           </div>
         </div>
