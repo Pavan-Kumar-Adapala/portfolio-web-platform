@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Cloud, GitBranch, Database, Package } from 'lucide-react';
 
-const texts = ['Cloud Engineer', 'Junior DevOps Engineer', 'Site Reliability Engineer'];
+const texts = ['Cloud Engineer', 'DevOps Engineer', 'Platform Engineer', 'MLOps Engineer'];
 
 const Hero = () => {
   const [currentText, setCurrentText] = useState('');
@@ -132,9 +132,7 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-gray-400 mb-12"
           >
-            Passionate about building scalable, resilient cloud or hybrid infrastructure
-            and streamlining deployment pipelines. almost 3 years of experience in
-            AWS, Containerization technologies, and modern DevOps practices.
+            DevOps Engineer with around 3 years of experience in Cloud and DevOps environments. Reduced CI/CD build failure root cause identification time by designing and implementing data-driven automation within CI/CD pipelines and GitOps workflows, minimizing manual investigation of test reports and build artifacts. Proven experience in integrating monitoring and security tools such as Grafana, Prometheus, and SonarQube, and in provisioning highly available and disaster-resilient infrastructure to deliver reliable platforms.
           </motion.div>
 
           <motion.div
