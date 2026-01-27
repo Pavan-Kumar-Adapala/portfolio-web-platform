@@ -1,42 +1,42 @@
-# name: Update S3 Bucket 
-# on:
-#   workflow_run:
-#     workflows: ["SAST and CI Pipeline for Portfolio"]  # Build artifacts workflow name
-#     types:
-#       - completed
-#     branches: [Prod]
+name: Update S3 Bucket 
+on:
+  workflow_run:
+    workflows: ["SAST and CI Pipeline for Portfolio"]  # Build artifacts workflow name
+    types:
+      - completed
+    branches: [Prod]
 
 
-# permissions:
-#   id-token: write
+permissions:
+  id-token: write
 
 
-# jobs:
-#     update_s3_bucket:
-#         name: Update S3 Bucket floders and files
-#         runs-on: ubuntu-latest
-#         steps:
-#             - name: Download the artifacts from the triggering workflow
-#               uses: actions/download-artifact@v5
-#               with:
-#                 name: vite-dist   # Name of the artifact to download
-#                 path: ./dist
-#                 github-token: ${{ github.token }} # if the workflow in the same repository, use the default token
-#                 run-id: ${{ github.event.workflow_run.id }} # Use the run ID from the
+jobs:
+    update_s3_bucket:
+        name: Update S3 Bucket floders and files
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download the artifacts from the triggering workflow
+              uses: actions/download-artifact@v5
+              with:
+                name: vite-dist   # Name of the artifact to download
+                path: ./dist
+                github-token: ${{ github.token }} # if the workflow in the same repository, use the default token
+                run-id: ${{ github.event.workflow_run.id }} # Use the run ID from the
 
-#             - name: Configure AWS credentials
-#               uses: aws-actions/configure-aws-credentials@v4
-#               with:
-#                 role-to-assume: arn:aws:iam::481665128385:role/github_OIDC_s3
-#                 aws-region: ${{ secrets.AWS_REGION }}
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: arn:aws:iam::481665128385:role/github_OIDC_s3
+                aws-region: ${{ secrets.AWS_REGION }}
 
-#             # - name: Configure AWS credentials
-#             #   uses: aws-actions/configure-aws-credentials@v2
-#             #   with:
-#             #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#             #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#             #       aws-region: ${{ secrets.AWS_REGION }}
+            # - name: Configure AWS credentials
+            #   uses: aws-actions/configure-aws-credentials@v2
+            #   with:
+            #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            #       aws-region: ${{ secrets.AWS_REGION }}
 
-#             - name: Sync files to S3 bucket
-#               run: |
-#                   aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude ".git/*" --delete
+            - name: Sync files to S3 bucket
+              run: |
+                  aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude ".git/*" --delete
