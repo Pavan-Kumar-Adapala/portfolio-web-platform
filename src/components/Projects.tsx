@@ -1,10 +1,8 @@
-import { useState, useRef } from 'react';
-import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { useState, useRef, useMemo } from 'react';
+import { motion, useMotionValue, AnimatePresence, useInView } from 'framer-motion';
 import { ExternalLink, Github, Play, X, Eye } from 'lucide-react';
 
-
-// ------------- TiltCard Component -------------
+// ---------------- TiltCard Component ----------------
 const TiltCard = ({ children }) => {
   const cardRef = useRef(null);
   const rotateX = useMotionValue(0);
@@ -16,10 +14,8 @@ const TiltCard = ({ children }) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
     rotateX.set(((y - centerY) / centerY) * 15);
     rotateY.set(((centerX - x) / centerX) * 15);
   };
@@ -35,11 +31,7 @@ const TiltCard = ({ children }) => {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-        }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         className="your-card-class"
       >
@@ -49,128 +41,140 @@ const TiltCard = ({ children }) => {
   );
 };
 
-// ------------- Projects Component -------------
+// ---------------- Projects Component ----------------
 const Projects = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true }); // threshold: 0.1
+  const isInView = useInView(ref, { once: true });
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [filter, setFilter] = useState<string>('All');
+
+  const categories = ['All', 'Automation', 'AWS', 'CI/CD', 'Monitoring', 'GitOps', 'Linux Administration', 'Serverless', 'DevsecOps', 'Web Application'];
 
   const projects = [
+
+    // Project 1: GitOps-Driven CI/CD Pipeline for Cloud-Native Web Application
     {
-      title: 'GitOps-Driven CI/CD Pipeline with ArgoCD, Kubernetes, and AWS',
-      description: 'Designed and deployed a GitOps-driven CI/CD pipeline leveraging ArgoCD and Kubernetes (kubeadm) on AWS EC2. Integrated DevSecOps practices with code quality checks, container vulnerability scanning, and secure networking, while deploying a ReactJS web application in a declarative and automated manner.',
+      title: 'End-to-End GitOps-Driven CI/CD Pipeline for Cloud-Native Web Application Deployment',
+      description: 'Designed and deployed a GitOps-driven CI/CD pipeline leveraging Argo CD and Kubernetes on AWS EC2. Integrated DevSecOps practices with code quality checks, container vulnerability scanning, and secure networking, while deploying web application in a declarative and automated manner.',
       image: '/images/gitops_cicd_gen_ani.gif',
-      technologies: ['GitHub Actions', 'ArgoCD', 'Kubernetes (kubeadm)', 'AWS EC2', 'Docker', 'Docker Compose', 'SonarQube', 'Trivy', 'Nexus Repository', 'Bash', 'AWS ALB', 'DNS, NACLs, Security Groups, IAM', 'ReactJS', 'TypeScript', 'Tailwind CSS', 'Nginx'],
-      
-      architecture: '/images/gitops.svg',
+      technologies: ['#'],
+      // technologies: ['GitHub Actions', 'Argo CD', 'AWS ALB', 'AWS EC2', 'Kubernetes', 'Docker', 'SonarQube', 'Trivy', 'Nexus Repository', 'Bash', , 'DNS, NACLs, Security Groups, IAM', 'ReactJS', 'TypeScript', 'Tailwind CSS', 'Nginx'],
+      architecture: '/images/gitops_cicd_gen_ani.gif',
       github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
       demo: '/images/gitops.svg',
-      category: 'GitOps, ArgoCD, CI/CD, Kubernetes, AWS',
+      category: 'Web Application, DevSecOps, GitOps, Argo CD, CI/CD, AWS',
+
       detailedDescription: [
-        'Built a multi-stage Dockerfile for optimized application containerization',
-        'Provisioned AWS EC2 instances and set up infrastructure services (SonarQube, Nexus Repository) using Docker Compose',
-        'Configured Kubernetes cluster with kubeadm, installed required components (CNI plugin, kubelet, kubectl, kubeadm)',
-        'Applied DevSecOps security:',
-        '  - SonarQube → Static Application Security Testing (SAST)',
-        '  - Trivy → Container vulnerability scanning',
-        '  - Linting → Syntax & code quality checks',
-        'Configured AWS ALB + NodePort Services for HTTPS and host-based routing',
-        'Applied least privilege principle with NACLs, Security Groups, IAM roles',
-        'Modified package.json to support deployment requirements',
-        'Deployed ReactJS application via Kubernetes manifests (Deployment + Service)',
-        'Automated deployment workflow with ArgoCD GitOps-based synchronization',
+        'Designed and operated a production-oriented CI/CD platform for a cloud-native web application, focusing on deployment reliability, security, and operational consistency.',
+        'Containerized application components using multi-stage Docker builds and deployed them on a Kubernetes cluster to ensure reproducible and scalable releases.',
+        'Implemented GitOps-based delivery with Argo CD, enabling declarative deployments, automated rollbacks, and environment consistency across releases.',
+        'Architected secure AWS networking (ALB, IAM, DNS, Security Groups) following the principle of least privilege and HTTPS-only access patterns.',
+        'Integrated DevSecOps controls by embedding static code analysis (SonarQube) and container vulnerability scanning (Trivy) into the pipeline to prevent insecure artifacts from reaching production.',
       ],
+
       metrics: {
-        VulnerabilityScanning: '100% of containers',
-        CodeQualityChecks: '100% of PRs',
-        DeploymentTimeReduction: '50%',
-        CostEfficiency: 'Reduced by 20% through optimized resource usage'   
+        CodeQualityImprovement: '35%',
+        DockerImageSizeReduction: '200%',
       }
     },
+
+    // Project 2: CI/CD Optimization for ADAS Software Development
     {
-      title: 'Optimization of CI/CD Processes and Monitoring Systems for Autonomous Parking Software Development (ADAS)',
-      description: 'Streamlined testing and monitoring for ADAS software to enhance delivery reliability and reduced debugging time by 30%.',
-      image: 'https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Jenkins', 'Grafana', 'JFrog Artifactory', 'Git & Bitbucket', 'JIRA', 'PostgreSQL', 'Python & Bash Scripting', 'RESTAPIs', 'Linux (Ubuntu)'],
-      architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/ADAS_CICD.png?raw=true',
+      title: 'Developed CI/CD Pipeline for Autonomous Parking Software Flashing',
+      description: 'Automated safety-critical ADAS CI/CD pipeline by eliminating manual ECU flashing, improving release reliability, reducing setup time by 40%, and embedding ISO 27001 compliance into production workflows.',
+      image: '/images/ADAS_CICD.png',
+      technologies: ['#'],
+      // technologies: ['Jenkins', 'Grafana', 'JFrog Artifactory', 'Git & Bitbucket', 'JIRA', 'PostgreSQL', 'Python & Bash Scripting', 'RESTAPIs', 'Linux (Ubuntu)'],
+      architecture: '/images/ADAS_CICD.png',
       github: '#',
       demo: '#',
-      category: 'DevOps, CI/CD, ADAS',
+      category: 'ADAS, CI/CD, Automation',
       detailedDescription: [
-        'Automated nightly CTC and smoke test pipelines by integrating Python scripts to extract test reports and generate visual summaries from artifacts, reducing debugging time by 30%',
-        'Co-developed a Jenkins pipeline for PDX container creation and flashing the Parking ECU (FPM Core), reducing manual effort and enhancing traceability in line with ISO 27001 automotive data integrity standards',
-        'Developed a centralized Grafana dashboard using advanced PostgreSQL queries to monitor the development process in real time and support data-driven decision-making across parking software projects'
+        'Addressed frequent CI/CD failures and release delays in safety-critical ADAS software caused by manual preparation of diagnostic data and inconsistent ECU flashing workflows.',
+        'Implemented Jenkins-based CI/CD pipeline in a distributed hardware–software environment, automating the generation of validated and signed PDX containers directly from versioned binaries and configuration artifacts stored in JFrog Artifactory.',
+        'Integrated hardware dependencies and enforced ISO 27001–aligned security and quality checks, eliminating human error and ensuring consistent, compliant deployments across environments.',
+        'Reduced ECU flashing setup time by 40%, eliminated flashing failures, improved pipeline reliability, and accelerated release cycles while increasing overall engineering productivity.',
       ],
       metrics: {
-        Reduceddebuggingtime: '30%',
-        Qualitystandard: 'ISO 27001',
+        FlashingSetupTimeReduction: '40%',
+        SecurityCompliance: 'ISO 27001',
       }
     },
+
+    // Project 3: Hybrid Infrastructure Monitoring Stack
     {
-      title: 'Hybrid Infrastructure Monitoring Stack',
-      description: 'Comprehensive monitoring and observability solution with custom dashboards, alerting, and performance analytics for cloud and on-premises infrastructure.',
-      image: 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Prometheus', 'Grafana', 'VMware', 'AWS', 'OpenVPN', 'Node Exporter', 'Nginx', 'Linux (RHEL 9)', 'Shell/Bash Scripting'],
-      architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/prometheus_hybrid_monitoring_architecture.gif?raw=true',
+      title: 'Centralized Monitoring & Performance Optimization for Hybrid Infrastructure',
+      description: 'Built a centralized monitoring and observability platform for hybrid infrastructure, enabling early detection of performance bottlenecks, faster root-cause analysis, and improved system reliability through data-driven insights.',
+      image: 'images/prometheus_hybrid_monitoring_architecture.gif',
+      technologies: ['#'],
+      // technologies: ['Prometheus', 'Grafana', 'VMware', 'AWS', 'OpenVPN', 'Node Exporter', 'Nginx', 'Linux (RHEL 9)', 'Shell/Bash Scripting'],
+      architecture: 'images/prometheus_hybrid_monitoring_architecture.gif',
       github: 'https://github.com/Pavan-Kumar-Adapala/prometheus_hybrid_monitoring_proj',
-      demo: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/prometheus_hybrid_monitoring_architecture.gif?raw=true',
-      category: 'Monitoring and observability',
+      demo: 'images/prometheus_hybrid_monitoring_architecture.gif',
+      category: 'Monitoring',
       detailedDescription: [
-        'Designed a secure monitoring stack using Prometheus, Grafana, and Node Exporter to collect metrics from AWS EC2 and on-prem RHEL nodes via OpenVPN and Nginx reverse proxy, mirroring real-world hybrid infrastructure and improving observability across environments',
-        'Automated secure metric collection across AWS EC2 and on-prem RHEL nodes by integrating OpenVPN tunneling and Nginx reverse proxy into a centralized Prometheus-Grafana stack, enabling real-time observability and enforcing restricted access through fine-grained firewall rules'
+        'Built a centralized Prometheus–Grafana observability platform for a hybrid environment spanning AWS VMs, Kubernetes clusters, and on-premise RHEL servers, eliminating fragmented monitoring and blind spots across infrastructure layers.',
+        'Integrated Node Exporter and cAdvisor to collect VM-, container-, and pod-level metrics, enabling correlation of CPU, memory, disk, and workload behavior across cloud and on-prem systems.',
+        'Identified early CPU and memory bottlenecks and proactively optimized Kubernetes resource requests and limits, preventing pod restarts and performance degradation in production.',
+        'Implemented custom dashboards and alerting to enable faster root-cause analysis, reduce MTTR, and improve overall system reliability and operational efficiency.',
       ],
       metrics: {
-        servers: 'AWS EC2, On-premises VM',
-        setupTimeReduced: '30%',
-        accessSecurity: 'Secured tunnel (VPN + reverse proxy)'
+        OperationalDowntime: 'Significantly reduced',
+        SystemReliability: 'Improved production stability'
       }
     },
-    {
-      title: 'Deployment of Django Web Application on AWS',
-      description: 'Deployed the web application on a scalable 3-tier architecture, implementing Auto Scaling and an Elastic Load Balancer (ELB) to ensure a secure and scalable AWS infrastructure.',
-      image: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['AWS (EC2, VPC, IAM, Route 53, Elastic Load Balancer, AutoScaling, RDS, S3, SES, CloudWatch)', 'Git', 'GitHub', 'Jenkins', 'Linux (Ubuntu)', 'Python & Bash scripting', 'Nginx Web Server'],
-      architecture: '/images/aws_django.png', 
-      // architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/aws_django.png?raw=true',
-      github: '#',
-      demo: '#',
-      category: 'AWS, 3-Tier Architecture',
-      detailedDescription: [
-        'Designed and deployed a scalable 3-tier AWS architecture to host a Django web application (vehicle quality testing), ensuring high availability and cost efficiency',
-        'Configured EC2 Auto Scaling and Load Balancer to optimize performance',
-        'Implemented CI/CD pipelines using Jenkins Master-Slave architecture to automate deployments and accelerating release cycles', 
-        'Implemented custom monitoring dashboard and alert mechanisum using AWS CloudWatch and SES services, enabling proactive issue resolution',
-        'Secured RDS–EC2 data flow using VPC and IAM policies to enforce least-privilege access',
-        'Improved query performance by 30% and reduced operational costs by 25% through cloud migration'
-      ],
-      metrics: {
-        uptime: '99.9%',
-        operationalcostReduction: '25%',
-        queryperformanceImprovement: '30%'
-      }
-    },
-    {
-      title: 'End-to-End CI/CD Pipeline for React Application',
-      description: 'Implemented an end-to-end CI/CD pipeline for a personal portfolio website to simulate real-world DevOps workflows, using GitHub Actions, Docker, SonarQube, Nexus, AWS EC2, ALB, and GitHub Pages, resulting in automated build, quality checks, artifact management, and seamless deployment to production.',
-      image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['GitHub Actions', 'GitHub Pages', 'Docker', 'Docker Compose', 'SonarQube', 'Nexus Repository', 'AWS EC2', 'AWS Application Load Balancer (ALB)', 'AWS IAM', 'Vite', 'React', 'TypeScript', 'Tailwind CSS'],
-      architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/CI_CD.png?raw=true',
-      github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
-      demo: '#',
-      category: 'Docker, CI/CD, AWS, SonarQube, Nexus',
-      detailedDescription: [
-        'Built an end-to-end CI/CD pipeline using GitHub Actions and GitFlow to automate build, quality checks, artifact management, and deployment of a React application to GitHub Pages with a custom domain',
-        'Containerized the application using a multi-stage Dockerfile to reduce image size, ensure consistency, and enable reproducible deployments across environments',
-        'Integrated SonarQube for static code analysis (SAST) and Nexus Repository for artifact and Docker image hosting, deployed on AWS EC2 with Application Load Balancer for high availability',
-        'Outcome: Gained hands-on experience in CI/CD, integrating security tools, and containerizing applications to deliver scalable, production-grade digital solutions that streamline development and deployment workflows'
-      ],
-      metrics: {
-        DeploymentAutomation: '100% via GitHub Actions',
-        imageSize: '50% smaller than previous builds',
-        securityScans: '100% of builds',
-        codeReviewCoverage: '100% of PRs'
-      }
-    },
+
+    // Project 4: Deployment of Django Web Application on AWS
+    // {
+    //   title: 'Deployment of Django Web Application on AWS',
+    //   description: 'Deployed the web application on a scalable 3-tier architecture, implementing Auto Scaling and an Elastic Load Balancer (ELB) to ensure a secure and scalable AWS infrastructure.',
+    //   image: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800',
+    //   technologies: ['AWS (EC2, VPC, IAM, Route 53, Elastic Load Balancer, AutoScaling, RDS, S3, SES, CloudWatch)', 'Git', 'GitHub', 'Jenkins', 'Linux (Ubuntu)', 'Python & Bash scripting', 'Nginx Web Server'],
+    //   architecture: '/images/aws_django.png', 
+    //   // architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/aws_django.png?raw=true',
+    //   github: '#',
+    //   demo: '#',
+    //   category: 'AWS, 3-Tier Architecture',
+    //   detailedDescription: [
+    //     'Designed and deployed a scalable 3-tier AWS architecture to host a Django web application (vehicle quality testing), ensuring high availability and cost efficiency',
+    //     'Configured EC2 Auto Scaling and Load Balancer to optimize performance',
+    //     'Implemented CI/CD pipelines using Jenkins Master-Slave architecture to automate deployments and accelerating release cycles', 
+    //     'Implemented custom monitoring dashboard and alert mechanisum using AWS CloudWatch and SES services, enabling proactive issue resolution',
+    //     'Secured RDS–EC2 data flow using VPC and IAM policies to enforce least-privilege access',
+    //     'Improved query performance by 30% and reduced operational costs by 25% through cloud migration'
+    //   ],
+    //   metrics: {
+    //     uptime: '99.9%',
+    //     operationalcostReduction: '25%',
+    //     queryperformanceImprovement: '30%'
+    //   }
+    // },
+
+    // Project 5: Personal Portfolio CI/CD Pipeline
+    // {
+    //   title: 'End-to-End CI/CD Pipeline for React Application',
+    //   description: 'Implemented an end-to-end CI/CD pipeline for a personal portfolio website to simulate real-world DevOps workflows, using GitHub Actions, Docker, SonarQube, Nexus, AWS EC2, ALB, and GitHub Pages, resulting in automated build, quality checks, artifact management, and seamless deployment to production.',
+    //   image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    //   technologies: ['GitHub Actions', 'GitHub Pages', 'Docker', 'Docker Compose', 'SonarQube', 'Nexus Repository', 'AWS EC2', 'AWS Application Load Balancer (ALB)', 'AWS IAM', 'Vite', 'React', 'TypeScript', 'Tailwind CSS'],
+    //   architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/CI_CD.png?raw=true',
+    //   github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
+    //   demo: '#',
+    //   category: 'Docker, CI/CD, AWS, SonarQube, Nexus',
+    //   detailedDescription: [
+    //     'Built an end-to-end CI/CD pipeline using GitHub Actions and GitFlow to automate build, quality checks, artifact management, and deployment of a React application to GitHub Pages with a custom domain',
+    //     'Containerized the application using a multi-stage Dockerfile to reduce image size, ensure consistency, and enable reproducible deployments across environments',
+    //     'Integrated SonarQube for static code analysis (SAST) and Nexus Repository for artifact and Docker image hosting, deployed on AWS EC2 with Application Load Balancer for high availability',
+    //     'Outcome: Gained hands-on experience in CI/CD, integrating security tools, and containerizing applications to deliver scalable, production-grade digital solutions that streamline development and deployment workflows'
+    //   ],
+    //   metrics: {
+    //     DeploymentAutomation: '100% via GitHub Actions',
+    //     imageSize: '50% smaller than previous builds',
+    //     securityScans: '100% of builds',
+    //     codeReviewCoverage: '100% of PRs'
+    //   }
+    // },
+
+
     {
       title: 'Secure Serverless Website Hosting',
       description: 'Hosted a static portfolio on AWS S3 with CloudFront integration for fast, secure global delivery.',
@@ -255,135 +259,142 @@ const Projects = () => {
   }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
+  // Filtered projects based on selected category
+  const filteredProjects = useMemo(() => {
+    if (filter === 'All') return projects;
+    return projects.filter((p) =>
+      p.category.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [filter, projects]);
+
+  // Entry animation variants for left/right
+  const itemVariantsLeft = {
+    hidden: { opacity: 0, x: -80 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
   };
 
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+  const itemVariantsRight = {
+    hidden: { opacity: 0, x: 80 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
   };
 
   return (
     <section id="projects" ref={ref} className="py-20 bg-gradient-to-br from-gray-800 to-gray-900">
       <div className="container mx-auto px-6">
+        {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Featured Projects
           </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            A showcase of my DevOps, cloud engineering, and automation projects, featuring infrastructure automation, 
-            CI/CD pipelines, and scalable cloud solutions
-          </p>
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${filter === cat
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-blue-600 hover:text-white'}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
+        {/* Project Cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid md:grid-cols-2 gap-8"
+          animate="visible"
+          className="grid md:grid-cols-2 gap-8 mt-8"
         >
-          {projects.map((project, index) => (
-            <TiltCard key={index}>
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300"
-              >
-                <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
-                  <div className="absolute top-4 right-4">
-                    <span className="bg-blue-500/80 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {project.category}
-                    </span>
+          <AnimatePresence>
+            {filteredProjects.map((project, index) => (
+              <TiltCard key={project.title}>
+                <motion.div
+                  variants={index % 2 === 0 ? itemVariantsLeft : itemVariantsRight}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0, y: 50 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="group bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-blue-500/80 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        {project.category}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-                    {project.title}
-                  </h3>
-                  
-                  <p className="text-gray-300 mb-4 leading-relaxed">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.map((tech, i) => (
-                      <motion.span
-                        key={tech}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 + i * 0.05 }}
-                        className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30"
+
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex space-x-4">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
                       >
-                        {tech}
-                      </motion.span>
-                    ))}
+                        <Github size={18} />
+                        <span>Code</span>
+                      </a>
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
+                      >
+                        <Play size={18} />
+                        <span>Demo</span>
+                      </a>
+                      <button
+                        onClick={() => setSelectedProject(index)}
+                        className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        <Eye size={18} />
+                        <span>Details</span>
+                      </button>
+                    </div>
                   </div>
-                  
-                  <div className="flex space-x-4">
-                    <motion.a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-                    >
-                      <Github size={18} />
-                      <span>Code</span>
-                    </motion.a>
-                    
-                    <motion.a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      <Play size={18} />
-                      <span>Demo</span>
-                    </motion.a>
-                    
-                    <motion.button
-                      onClick={() => setSelectedProject(index)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition-colors"
-                    >
-                      <Eye size={18} />
-                      <span>Details</span>
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-            </TiltCard>
+                </motion.div>
+              </TiltCard>
             ))}
+          </AnimatePresence>
         </motion.div>
 
         {/* Project Detail Modal */}
@@ -418,7 +429,7 @@ const Projects = () => {
 
                   {/* Architecture Diagram */}
                   <div className="mb-8">
-                    <h4 className="text-xl font-semibold text-white mb-4">Architecture Overview</h4>
+                    {/* <h4 className="text-xl font-semibold text-white mb-4">Architecture Overview</h4> */}
                     <div className="rounded-lg overflow-hidden border border-gray-600">
                       <img
                         src={projects[selectedProject].architecture}
@@ -440,7 +451,8 @@ const Projects = () => {
 
                   {/* Detailed Description */}
                   <div className="mb-8">
-                    <h4 className="text-xl font-semibold text-white mb-4">Implementation Details</h4>
+                    {/* <h4 className="text-xl font-semibold text-white mb-4">
+                      Implementation Details</h4> */}
                     <ul className="space-y-3">
                       {projects[selectedProject].detailedDescription.map((item, i) => (
                         <li key={i} className="text-gray-300 flex items-start">
