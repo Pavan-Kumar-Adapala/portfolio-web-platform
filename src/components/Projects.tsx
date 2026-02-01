@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from 'react';
 import { motion, useMotionValue, AnimatePresence, useInView } from 'framer-motion';
-import { ExternalLink, Github, Play, X, Eye, Code } from 'lucide-react';
+import { ExternalLink, Github, Play, X, Eye } from 'lucide-react';
 
 // ---------------- TiltCard Component ----------------
 const TiltCard = ({ children }) => {
@@ -353,7 +353,7 @@ const Projects = () => {
                     <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
 
                     <div className="flex flex-wrap gap-2 mb-6">
-                      {project.technologies.map((tech, i) => (
+                      {project.technologies.map((tech) => (
                         <span
                           key={tech}
                           className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30"
