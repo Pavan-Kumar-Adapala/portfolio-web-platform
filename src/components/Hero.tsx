@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Cloud, GitBranch, Database, Package } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const texts = ['Cloud Engineer', 'DevOps Engineer', 'Platform Engineer', 'MLOps Engineer'];
 
@@ -33,12 +33,6 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, [currentText, currentIndex, isDeleting]);
 
-  const floatingIcons = [
-    { Icon: Cloud, delay: 0, x: 100, y: 50 },
-    { Icon: GitBranch, delay: 0.5, x: 150, y: 150 },
-    { Icon: Database, delay: 1, x: 180, y: 200 },
-    { Icon: Package, delay: 2, x: 200, y: 250 },
-  ];
 
   return (
     <section
@@ -90,28 +84,28 @@ const Hero = () => {
       </div>
 
       {/* Background Image Section - Full Screen */}
-      <div className="w-full bg-gray-900 relative overflow-hidden">
-        <img
+      <div className="w-screen bg-gray-900 relative overflow-hidden px-10">
+        <p className="text-white text-center font-bold">Technical Skillset Overview</p>
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1, repeat: Infinity }}
+          className="flex justify-center"
+        >
+          <ChevronDown className="text-white" size={32} />
+        </motion.div>
+        <motion.img
           src="/skills/Skills_chain.png"
           alt="Skills Chain"
-          className="w-full h-auto object-cover block"
+          className="w-full h-auto object-contain block"
           style={{
             minHeight: '100vh',
-            filter: 'contrast(1.1) brightness(0.9)',
+            filter: 'contrast(2.1) brightness(0.8)',
             mixBlendMode: 'screen',
           }}
+          initial={{ x: '-100vw' }}
+          animate={{ x: 0 }}
+          transition={{ duration: 1, delay: 1 }}
         />
-        {/* Dark overlay to match context background color */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundColor: 'rgba(224, 229, 240, 0.2)',
-            pointerEvents: 'none',
-            top: '0',
-            left: '0',
-            mixBlendMode: 'multiply',
-          }}
-        ></div>
       </div>
 
       {/* Scroll Indicator */}

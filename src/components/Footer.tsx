@@ -1,7 +1,23 @@
 //import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Code, Coffee } from 'lucide-react';
+import { Heart, Code, Coffee, Linkedin, Github} from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const socialLinks = [
+  {
+    icon: Linkedin,
+    href: 'https://www.linkedin.com/in/pavanadapala/',
+    label: 'LinkedIn',
+    color: 'hover:text-blue-500',
+  },
+  {
+    icon: Github,
+    href: 'https://github.com/Pavan-Kumar-Adapala/Pavan_Kumar_Adapala_github',
+    label: 'GitHub',
+    color: 'hover:text-gray-400',
+  },
+];
+
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -69,8 +85,32 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Get In Touch</h3>
             <div className="space-y-2 text-gray-400">
-              <p>📧 pavankumar.adapala.msc@email.com</p>
-              <p>📍 70435 Stuttgart, Germany</p>
+              <a href="mailto:pavankumar.adapala.msc@gmail.com" className="block hover:text-white transition-colors">📧 pavankumar.adapala.msc@gmail.com</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=70435+Stuttgart,+Germany" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition-colors">📍 70435 Stuttgart, Germany</a>
+              {/* Social Links */}
+              <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                <div className="flex space-x-4">
+                  {socialLinks.map((social, index) => (
+                    <motion.a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.2, y: -5 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`p-3 bg-gray-800 rounded-lg text-gray-400 ${social.color} transition-all hover:bg-gray-700`}
+                    aria-label={social.label}
+                    >
+                      <social.icon size={24} />
+                      </motion.a>
+                    ))
+                  }
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>

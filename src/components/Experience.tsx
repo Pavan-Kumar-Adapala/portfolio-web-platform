@@ -1,11 +1,10 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Briefcase, Calendar, MapPin, TrendingUp } from 'lucide-react';
 
 const Experience = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, threshold: 0.2 });
+  const isInView = useInView(ref, { once: true });
 
   const experiences = [
     {
@@ -15,6 +14,7 @@ const Experience = () => {
       period: '02/2024 - 07/2024',
       description: [
         'Developed and evaluated ML-based load forecasting models (batch and one-step-ahead) using IIoT time-series data from automotive paint shop HVAC systems. These models enhanced Predictive Energy Management (PEM) by achieving 95% forecasting accuracy, accounting for weather-related uncertainties, and enabling proactive load shifting to reduce energy waste and operational costs.',
+        'Worked closely with data scientists and domain experts to operationalize ML models under real-world constraints of critical energy infrastructure.',
       ],
       // technologies: ['Python', 'Exploratory Data Analysis (EDA)', 'Time series forecasting', 'Data pipelines', 'Machine Learning (ML)', 
       //   'Feature engineering', 'Data-driven decision making', 'Exclude commissioning period', 'Plausibility checks'],
@@ -77,17 +77,30 @@ const Experience = () => {
     }
   };
 
-  const itemVariants = {
-    hidden: { x: -50, opacity: 0 },
+  const itemVariantsLeft = {
+    hidden: { opacity: 0, x: -80 },
     visible: {
-      x: 0,
       opacity: 1,
+      x: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
+
+  const itemVariantsRight = {
+    hidden: { opacity: 0, x: 80 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
 
   return (
     <section id="experience" ref={ref} className="py-20 bg-gray-900">
@@ -112,7 +125,7 @@ const Experience = () => {
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
+                variants={index % 2 === 0 ? itemVariantsLeft : itemVariantsRight}
                 className="relative mb-12"
               >
                 {/* Timeline line */}
@@ -140,8 +153,8 @@ const Experience = () => {
                       <div>
                         <motion.h3 
                           className="text-2xl font-bold text-white mb-2"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                          initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                          animate={isInView ? { opacity: 1, x: 0 } : {}}
                           transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
                           {exp.title}
@@ -179,8 +192,8 @@ const Experience = () => {
                       {exp.description.map((item, i) => (
                         <motion.li
                           key={i}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                          initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                          animate={isInView ? { opacity: 1, x: 0 } : {}}
                           transition={{ duration: 0.5, delay: index * 0.1 + i * 0.1 }}
                           className="text-gray-300 flex items-start"
                         >
