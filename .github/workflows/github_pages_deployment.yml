@@ -4,8 +4,8 @@ on:
   workflow_run:
     workflows: ["SAST and CI Pipeline for Portfolio"]
     types: [completed]
-    branches: [feature/*]
-  
+    branches: [Prod]
+
   # Fallback: Also trigger manually if needed
   workflow_dispatch:
 
