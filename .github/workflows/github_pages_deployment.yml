@@ -4,6 +4,10 @@ on:
   workflow_run:
     workflows: ["SAST and CI Pipeline for Portfolio"]
     types: [completed]
+    branches: [feature/*]
+  
+  # Fallback: Also trigger manually if needed
+  workflow_dispatch:
 
 jobs:
   deploy_to_github_pages:
