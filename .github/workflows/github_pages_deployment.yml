@@ -2,14 +2,14 @@ name: GitHub Pages Deployment Workflow
 
 on:
   workflow_run:
-    workflows: [SAST and CI Pipeline for Portfolio]
+    workflows: ["SAST and CI Pipeline for Portfolio"]
     types: [completed]
-    branches: [feature/*] # Prod
 
 jobs:
   deploy_to_github_pages:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
 
     permissions:
       contents: write # push to gh-pages
