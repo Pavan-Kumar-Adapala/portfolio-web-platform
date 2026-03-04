@@ -5,7 +5,6 @@ on:
     workflows: ["SAST and CI Pipeline for Portfolio"]
     types: [completed]
     branches: [Prod]
-  workflow_dispatch:
 
   # Fallback: Also trigger manually if needed
   workflow_dispatch:
