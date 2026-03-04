@@ -193,9 +193,11 @@ jobs:
           context: .
           file: Dockerfile
           push: false
+          # ${{ github.ref_name }}
+          # ${{ github.ref_name }}-${{ github.sha }}
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/personal_portfolio_3d:${{ github.ref_name }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/personal_portfolio_3d:${{ github.ref_name }}-${{ github.sha }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/personal_portfolio_3d:feature 
+            ${{ secrets.DOCKER_HUB_USERNAME }}/personal_portfolio_3d:feature-${{ github.sha }}
 
       # Scan the Docker image for vulnerabilities before pushing
       - name: Run Trivy vulnerability scanner
