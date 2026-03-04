@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [SAST and CI Pipeline for Portfolio]
     types: [completed]
-    branches: [Prod]
+    branches: [feature/*] # Prod
 
 jobs:
   deploy_to_github_pages:
@@ -12,23 +12,23 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # push to gh-pages
-      pages: write     # deploy to GitHub Pages
-      id-token: write  # authentication with GitHub Pages
-      actions: read   # read actions
+      contents: write # push to gh-pages
+      pages: write # deploy to GitHub Pages
+      id-token: write # authentication with GitHub Pages
+      actions: read # read actions
 
     steps:
-    #   - name: Install GitHub CLI
-    #     run: sudo apt-get install -y gh
+      #   - name: Install GitHub CLI
+      #     run: sudo apt-get install -y gh
 
       # https://github.com/actions/download-artifact?tab=readme-ov-file#download-artifacts-from-other-workflow-runs-or-repositories
       - name: Download artifact from triggering workflow
         uses: actions/download-artifact@v5
         with:
-            name: dist
-            path: ./dist
-            github-token: ${{ github.token }} # if the workflow in the same repository, use the default token
-            run-id: ${{ github.event.workflow_run.id }} # Use the run ID from the triggering workflow
+          name: dist
+          path: ./dist
+          github-token: ${{ github.token }} # if the workflow in the same repository, use the default token
+          run-id: ${{ github.event.workflow_run.id }} # Use the run ID from the triggering workflow
         # env:
         #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
