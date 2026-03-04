@@ -1,0 +1,79 @@
+services:
+  # Ollama LLM Service
+  ollama:
+    image: ollama/ollama:latest
+    container_name: portfolio-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 10s
+      timeout: 15s
+      retries: 10
+      start_period: 30s
+    networks:
+      - portfolio-network
+
+  # Backend - FastAPI Service (Production optimized)
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        - ENVIRONMENT=production
+    container_name: portfolio-backend-prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OLLAMA_URL=http://ollama:11434
+      - CORS_ORIGINS=https://yourdomain.com
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - portfolio-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # Frontend - Production build (Nginx)
+  frontend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: production
+    container_name: portfolio-frontend-prod
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=https://api.yourdomain.com
+    depends_on:
+      - backend
+    networks:
+      - portfolio-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+volumes:
+  ollama_data:
+
+networks:
+  portfolio-network:
+    driver: bridge
