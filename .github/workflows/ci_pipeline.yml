@@ -201,7 +201,7 @@ jobs:
 
       # Scan the Docker image for vulnerabilities before pushing
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.56.1
         # ${{ github.ref_name }}
         with:
           image-ref: adapaladocker/personal_portfolio_3d:feature
@@ -277,7 +277,7 @@ jobs:
           tags: adapaladocker/portfolio_backend:feature-${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner on Backend
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.56.1
         with:
           image-ref: adapaladocker/portfolio_backend:feature-${{ github.sha }}
           format: sarif
