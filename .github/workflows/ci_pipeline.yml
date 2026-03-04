@@ -202,14 +202,13 @@ jobs:
 
       # Scan the Docker image for vulnerabilities before pushing
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.33.1
-        # ${{ github.ref_name }}
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/personal_portfolio_3d:feature
           format: sarif
           output: trivy-results.sarif
           severity: "CRITICAL" # HIGH,MEDIUM,LOW
-          exit-code: "0" # 1 for Fail the job if vulnerabilities are found in the Dockerfile
+          exit-code: "0" # 1 to fail the job if vulnerabilities are found
           ignore-unfixed: true # Ignore unfixed vulnerabilities
 
       # - name: View SARIF contents
@@ -248,7 +247,7 @@ jobs:
 
       # Scan the Docker image for vulnerabilities before pushing
       - name: Run Trivy vulnerability scanner on Backend
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio_backend:feature-${{ github.sha }}
           format: sarif
