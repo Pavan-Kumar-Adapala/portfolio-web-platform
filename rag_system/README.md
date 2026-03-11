@@ -6,7 +6,7 @@ Requirements / Dependencies:
 - Download and install Ollama (https://ollama.com/download)
   - ollama pull <name-of-model>
   - To chat directly with a model from the command line, use ollama run <name-of-model>
-- pip install langchain langchain-text-splitters langchain-community langchain-ollama langchain-chroma python_dotenv
+- pip install langchain langchain-text-splitters langchain-community langchain-ollama langchain-chroma python_dotenv pypdf pillow
 
 ## LangChain
 
