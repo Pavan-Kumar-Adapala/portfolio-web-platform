@@ -3,10 +3,6 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document  # Added for type checking
 
 # --------------- Set up logging configuration ----------------
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S'
-                    )
 logger = logging.getLogger(__name__)
 
 # --------------- PDFSplitter class definition ----------------
@@ -43,6 +39,10 @@ class PDFSplitter:
         
         all_chunks = self.splitter.split_documents(documents)  # Use the split_documents method to split the text from the list of Document objects into chunks
         logger.info(f"Split {len(documents)} documents into {len(all_chunks)} chunks.")
+        for i, chunk in enumerate(all_chunks):
+            chunk.metadata["source"] = chunk.metadata.get("source", "unknown")  # Preserve source metadata in each chunk
+            chunk.metadata["page"] = chunk.metadata.get("page", "unknown")  # Preserve page metadata in each chunk
+            chunk.metadata["chunk_id"] = i  # Add a unique chunk ID to the metadata of each chunk for tracking and debugging purposes
         
         return all_chunks
         

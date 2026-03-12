@@ -1,11 +1,8 @@
 import os, logging
-from langchain_community.document_loaders import PyPDFDirectryLoader
+from langchain_community.document_loaders import PyPDFDirectoryLoader
+
 
 # --------------- Set up logging configuration ----------------
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S'
-                    )
 logger = logging.getLogger(__name__)
 
 
@@ -46,7 +43,7 @@ class DocumentLoader:
             logger.error(f"Directory {self.directory_path} does not exist.")
             raise FileNotFoundError(f"Directory {self.directory_path} does not exist.")
         
-        loader = PyPDFDirectryLoader(self.directory_path)
+        loader = PyPDFDirectoryLoader(self.directory_path)
         pdf_documents = loader.load()
 
         logger.info(f"Loaded {len(pdf_documents)} pdf_documents from {self.directory_path}")
