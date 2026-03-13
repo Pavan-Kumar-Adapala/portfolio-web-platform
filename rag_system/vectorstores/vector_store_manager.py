@@ -26,10 +26,11 @@ class VectorStoreManager:
         try:
             self.embeddings_model = OllamaEmbeddings(model=embeddings_model)
             logger.info(f"Initialized OllamaEmbeddings with model: {embeddings_model}")
-            self.vector_store = Chroma(
+            self.vector_store_db = Chroma(
                                         collection_name="resume_pdf_chunks",
                                         embedding_function=self.embeddings_model,
                                         persist_directory=db_persistent_directory,
+                                        collection_metadata={"hnsw:space": "cosine"} # Optional metadata for HNSW index configuration, e.g., using cosine similarity for vector comparisons
                                     )
             logger.info(f"Initialized Chroma vector store with collection name: 'resume_pdf_chunks' and persist directory: {db_persistent_directory}")
         except Exception as e:
@@ -45,7 +46,7 @@ class VectorStoreManager:
         content = chunk.page_content
         return hashlib.sha256(content.encode()).hexdigest()
         
-    def add_chunks_to_vector_store(self, chunks: list) -> None:
+    def add_chunks_to_vector_store_db(self, chunks: list) -> None:
         """
         Adds a list of chunks to the vector store.
 
@@ -61,8 +62,9 @@ class VectorStoreManager:
         
         try:
             ids = [self._generate_chunk_id(chunk) for chunk in chunks]
-            self.vector_store.add_documents(documents=chunks, ids=ids)
+            self.vector_store_db.add_documents(documents=chunks, ids=ids)
             logger.info(f"Added {len(chunks)} chunks to vector store with generated IDs.")
+            logger.info("Step 3: Adding chunks to vector store completed.")
         except Exception as e:
             logger.error(f"Failed to add chunks to vector store: {e}")
             raise 
