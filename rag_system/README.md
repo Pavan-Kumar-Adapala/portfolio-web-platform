@@ -19,7 +19,7 @@ Requirements / Dependencies:
     - Reload **source ~/.bashrc**
   - ollama pull <name-of-model>
   - To chat directly with a model from the command line, use ollama run <name-of-model>
-- pip install langchain langchain-text-splitters langchain-community langchain-ollama langchain-chroma langchain_core python_dotenv pypdf pillow
+- pip install langchain langchain-text-splitters langchain-community langchain-ollama langchain-chroma langchain-core python_dotenv pypdf pillow
 
 python -m rag_system.main
 
@@ -30,6 +30,24 @@ LangChain Documentation Link: https://docs.langchain.com/oss/python/langchain/in
 LangChain RAG Documentation Link : https://docs.langchain.com/oss/python/langchain/rag
 
 LangChain Integration Options: https://docs.langchain.com/oss/python/integrations/providers/overview
+
+LangChain Message Types: https://docs.langchain.com/oss/python/langchain/messages#message-types
+
+### Types of Splitting the document
+
+1. Manual Splitting
+
+2. Automatic Splitting
+   1. from langchain.text_splitter import CharacterTextSplitter
+   2. from langchain_text_splitters import RecursiveCharacterTextSplitter (https://docs.langchain.com/oss/python/integrations/splitters)
+   3. Document text splitter
+   - MarkdownTextSplitter
+   - PythonCodeTextSplitter
+   - (For Javascript splitting) RecursiveCharacterTextSplitter and Language
+   4. Semantic Chunking
+      from langchain_experimental.text_splitter import SemanticChunker
+   5. Agentic Chunking
+      2 levels - Proposition-Based Chunking, Group Chunk
 
 ## Ollama
 
