@@ -22,6 +22,7 @@ class DocumentLoader:
             None
         """
         self.directory_path = directory_path # instance variable to store the directory path for loading pdf_documents
+        logger.info(f"DocumentLoader initialized with directory path: {directory_path}")
 
     # ---------------- Method to load pdf_documents from the specified directory ----------------
     def load_pdf_documents(self) -> list:
@@ -47,6 +48,7 @@ class DocumentLoader:
         pdf_documents = loader.load()
 
         logger.info(f"Loaded {len(pdf_documents)} pdf_documents from {self.directory_path}")
+        logger.info(f"Step 1: Load documents using the provided document loader completed.")
         if not pdf_documents:
             logger.warning(f"No pdf_documents found in directory {self.directory_path}.")
         

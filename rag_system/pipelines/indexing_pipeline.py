@@ -28,16 +28,16 @@ class IndexingPipeline:
         """
         try:
             # Step 1 — Load documents using the provided document loader
+            logger.info(f"Step 1: Load documents using the provided document loader started.")
             documents = self.loader.load_pdf_documents()
-            logger.info(f"Loaded {len(documents)} documents using the document loader.")
             
             # Step 2 — Split loaded documents into chunks using the provided PDF splitter
+            logger.info(f"Step 2: Split loaded documents into chunks started.")
             chunks = self.pdf_splitter.split_documents(documents)
-            logger.info(f"Split loaded documents into {len(chunks)} chunks using the PDF splitter.")
             
             # Step 3 — Add the resulting chunks to the vector store using the provided vector store manager
-            self.vector_store_manager.add_chunks_to_vector_store(chunks)
-            logger.info("Added chunks to vector store using the vector store manager.")
+            logger.info("Step 3: Adding chunks to vector store started.")
+            self.vector_store_manager.add_chunks_to_vector_store_db(chunks)
         
         except Exception as e:
             logger.error(f"An error occurred during the indexing pipeline: {e}")
