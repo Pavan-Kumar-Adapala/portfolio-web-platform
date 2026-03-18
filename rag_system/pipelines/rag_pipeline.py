@@ -16,14 +16,19 @@ class RAGPipeline:
         self.generator = generator
         logger.info("RAGPipeline initialized with provided retriever and generator.")
 
-    def run(self, query: str):
+    def run(self, query: str, top_k: int = 2) -> str:
 
         logger.info(f"Running RAG pipeline for query: {query}")
 
-        relevent_documents = self.retriever.retrieve_relevant_documents(query)
-        answer = self.generator.generate_response(query=query, relevent_documents=relevent_documents)
+        relevent_documents = self.retriever.retrieve_relevant_documents(query, top_k=top_k)
+        print(f"----------------------------- Retrieved Relevant Documents -------------------------------------")
+        for i, doc in enumerate(relevent_documents, start=1):
+            print(f"Document {i}:\n{doc.page_content}...\n")
+        print
 
+        answer = self.generator.generate_response(query, relevent_documents)
         logger.info(f"----------------------------- Final Answer -------------------------------------")
         logger.info(f"{answer}")
-        print(answer)
+        print(answer) 
         
+        return answer        

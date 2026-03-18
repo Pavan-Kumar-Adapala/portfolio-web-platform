@@ -26,7 +26,7 @@ class LLMGenerator:
             str: The generated response from the LLM.
         """
 
-        system_message = """You are a helpful assistant answering questions about a professional's resume and experience. 
+        system_message = """You are a helpful assistant answering questions about a professional's resume. 
         Answer based on the provided context. If the context doesn't contain the answer, say so clearly."""
 
         combined_input = f"""Based on the following documents, answer the question: {query}

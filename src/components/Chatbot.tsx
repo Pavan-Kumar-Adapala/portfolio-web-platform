@@ -17,7 +17,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     {
       id: "1",
       type: "bot",
-      text: "Hello! 👋 I'm your resume chatbot. Ask me anything about the experience, skills, or projects!",
+      text: "Hello! 👋 I'm your resume chatbot. Ask me anything about Pavan's Professional experience, skills, or projects!",
       timestamp: new Date(),
     },
   ]);

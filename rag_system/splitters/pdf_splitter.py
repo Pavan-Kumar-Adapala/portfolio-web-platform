@@ -48,6 +48,7 @@ class PDFSplitter:
             chunk.metadata["page"] = chunk.metadata.get("page", "unknown")  # Preserve page metadata in each chunk
             chunk.metadata["chunk_id"] = i  # Add a unique chunk ID to the metadata of each chunk for tracking and debugging purposes
         logger.info(f"Step 2: Split loaded documents into chunks completed.")
+
         return all_chunks
         
         # chunks = []
