@@ -1,13 +1,16 @@
 import logging
+import os
+import argparse
 from rag_system.loaders.document_loader import DocumentLoader
 from rag_system.splitters.pdf_splitter import PDFSplitter
 from rag_system.vectorstores.vector_store_manager import VectorStoreManager
 from rag_system.pipelines.indexing_pipeline import IndexingPipeline
 from langchain_ollama import ChatOllama
 from langchain.messages import SystemMessage, HumanMessage
-from rag_system.rag_pipeline import RAGPipeline
+from rag_system.pipelines.rag_pipeline import RAGPipeline
 from rag_system.retrieval.retriever_manager import RetrieverManager
 from rag_system.generation.llm_generator import LLMGenerator
+
 
 # --------------- Set up logging configuration ----------------
 def configure_logging():
@@ -20,7 +23,7 @@ def configure_logging():
         )
 
 # --------------- Main function to run the indexing pipeline ----------------
-def main():
+def main(query_retriever: str):
     configure_logging()  # Set up logging configuration
     logger = logging.getLogger(__name__)
     try:
@@ -29,19 +32,26 @@ def main():
         chroma_db_dir = "./db/chroma_db"
         logger.info(f"Directory path: {directory_path}")
         logger.info(f"Chroma DB directory: {chroma_db_dir}")
+        embeddings_model="qwen3-embedding:4b"
+        llm_model = "llama3.1:latest" # "qwen3.5:4b"
+        top_k = 4  # Number of relevant documents to retrieve for the query
 
         # ---------------- Initialize components (in simple terms, instance objects) ----------------
         loader = DocumentLoader(directory_path=directory_path)
         pdf_splitter = PDFSplitter(chunk_size=740, chunk_overlap=0)
-        vector_store_manager = VectorStoreManager(db_persistent_directory=chroma_db_dir, embeddings_model="qwen3-embedding:4b") # embeddings_model="nomic-embed-text" ) 
+        vector_store_manager = VectorStoreManager(db_persistent_directory=chroma_db_dir, embeddings_model=embeddings_model) # embeddings_model="nomic-embed-text" ) 
 
         
         # ---------------- Run the indexing pipeline ----------------
-        indexing_pipeline = IndexingPipeline(loader=loader, pdf_splitter=pdf_splitter, vector_store_manager=vector_store_manager)
-        logger.info("Indexing pipeline started.")
-        indexing_pipeline.run_indexing_pipeline()
-        
-        logger.info("Indexing pipeline completed successfully.")
+        # Only run the indexing pipeline if the chroma_db_dir does not exist, to avoid re-indexing every time the program runs (in production, you would typically have a separate process for indexing and a separate process for running the RAG pipeline, and you would not want to re-index every time you run the RAG pipeline)
+        if not os.path.exists(chroma_db_dir):
+            indexing_pipeline = IndexingPipeline(loader=loader, pdf_splitter=pdf_splitter, vector_store_manager=vector_store_manager)
+            logger.info("Indexing pipeline started.")
+            indexing_pipeline.run_indexing_pipeline()
+            logger.info("Indexing pipeline completed successfully.")
+
+        else:
+            logger.info(f"Chroma DB directory already exists {chroma_db_dir} . Skipping indexing pipeline.")
 
         # ---------------- Test retrieval ----------------
 
@@ -92,11 +102,10 @@ def main():
         # print(f"------------------------------------------------------------------------------------")
         # print(f"\nLLM Response:\n{response.content}")
 
-        query_retriever = "what is the candidate's most recent job title, company name, and location?"
         retriever = RetrieverManager(vector_store_manager=vector_store_manager)
-        generator = LLMGenerator(model_name="llama3.1:latest")
+        generator = LLMGenerator(model_name=llm_model)
         rag_pipeline = RAGPipeline(retriever=retriever, generator=generator)
-        rag_pipeline.run(query=query_retriever)
+        rag_pipeline.run(query=query_retriever, top_k=top_k)
 
     except Exception as e:
         logger.error(f"An error occurred in the main function: {e}")
@@ -104,7 +113,18 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    # Run the main function to execute the indexing pipeline and test retrieval and LLM response generation
+    parser = argparse.ArgumentParser(description="Run the RAG system indexing pipeline and test retrieval and LLM response generation.")
+    parser.add_argument(
+        "-q",
+        "--query_retriever",
+        type=str,
+        required=True,
+        help="Sample query string (e.g., 'Does the candidate have python experience?') to test retrieval and LLM response generation."
+    )
+    args = parser.parse_args()
+
+    main(query_retriever=args.query_retriever)
 
 # query questions to test the RAG?
 # 1. How Many years of experience does the candidate have?
@@ -112,3 +132,4 @@ if __name__ == "__main__":
 # 3. What are the candidate's top skills?
 # 4. what is the candidate's most recent job title?
 # 5. what is the candidate's most recent job title, company name, and location?
+# 6. What are the candidate's past job titles and companies?
