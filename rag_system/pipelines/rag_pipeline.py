@@ -21,14 +21,10 @@ class RAGPipeline:
         logger.info(f"Running RAG pipeline for query: {query}")
 
         relevent_documents = self.retriever.retrieve_relevant_documents(query, top_k=top_k)
-        print(f"----------------------------- Retrieved Relevant Documents -------------------------------------")
-        for i, doc in enumerate(relevent_documents, start=1):
-            print(f"Document {i}:\n{doc.page_content}...\n")
-        print
+        logger.info(f"Retrieved {len(relevent_documents)} relevant documents for query: {query}")
 
         answer = self.generator.generate_response(query, relevent_documents)
         logger.info(f"----------------------------- Final Answer -------------------------------------")
-        logger.info(f"{answer}")
-        print(answer) 
+        logger.info(f"{answer}") 
         
         return answer        
