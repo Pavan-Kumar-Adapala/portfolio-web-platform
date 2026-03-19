@@ -105,7 +105,8 @@ def main(query_retriever: str):
         retriever = RetrieverManager(vector_store_manager=vector_store_manager)
         generator = LLMGenerator(model_name=llm_model)
         rag_pipeline = RAGPipeline(retriever=retriever, generator=generator)
-        rag_pipeline.run(query=query_retriever, top_k=top_k)
+        answer = rag_pipeline.run(query=query_retriever, top_k=top_k)
+        return answer
 
     except Exception as e:
         logger.error(f"An error occurred in the main function: {e}")

@@ -17,7 +17,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     {
       id: "1",
       type: "bot",
-      text: "Hello! 👋 I'm your resume chatbot. Ask me anything about Pavan's Professional experience, skills, or projects!",
+      text: "Hello! 👋 I'm resume chatbot. Ask me anything about Pavan's Professional experience, skills, or projects!",
       timestamp: new Date(),
     },
   ]);
@@ -45,7 +45,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
 
   const checkChatbotStatus = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/chat/status`);
+      const response = await fetch(`${API_URL}/health`);
       const data = await response.json();
 
       if (response.ok && data.status === "ready" && data.rag_initialized && data.llm_available) {
@@ -84,7 +84,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/chat/message`, {
+      const response = await fetch(`${API_URL}/chat/question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

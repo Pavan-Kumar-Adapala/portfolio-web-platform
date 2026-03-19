@@ -53,10 +53,11 @@ Visit `http://localhost:8000/docs` for interactive API documentation.
 
 1. **Ask a Question**:
 
-```bash
-curl -X POST http://localhost:8000/api/chat/message \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is the candidate'\''s most recent job title?"}'
+```
+Invoke-WebRequest -Uri "http://localhost:8000/chat/question" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{"question": "what is the candidate most recent job title"}'
 ```
 
 ## Configuration
