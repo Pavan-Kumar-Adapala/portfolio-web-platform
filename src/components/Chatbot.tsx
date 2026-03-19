@@ -43,34 +43,37 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Function to check chatbot status
   const checkChatbotStatus = async () => {
-    try {
-      const response = await fetch(`${API_URL}/health`);
-      const data = await response.json();
+  try {
+    const response = await fetch(`${API_URL}/health`);
+    const data = await response.json();
 
-      if (response.ok && data.status === "ready" && data.rag_initialized && data.llm_available) {
-        setChatbotStatus("ready");
-        setError(null);
-      } else {
-        setChatbotStatus("loading");
-        setError("Chatbot is initializing... Please wait.");
-      }
-    } catch (err) {
-      setChatbotStatus("error");
-      setError("Unable to connect to chatbot service. Is the backend running?");
+    if (response.ok && data.status === "ready") {  // ✅ removed rag_initialized and llm_available checks
+      setChatbotStatus("ready");
+      setError(null);
+    } else {
+      setChatbotStatus("loading");
+      setError("Chatbot is initializing... Please wait.");
     }
-  };
+  } catch (err) {
+    setChatbotStatus("error");
+    setError("Unable to connect to chatbot service. Is the backend running?");
+  }
+};
 
+  // Function to send user message and get bot response
   const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent form submission
 
+    // Don't send empty messages or if chatbot is not ready
     if (!inputValue.trim() || isLoading || chatbotStatus !== "ready") {
       return;
     }
 
     const userQuestion = inputValue;
 
-    // Add user message
+    // Add user message to chat. It is a variable that holds the user message object.
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       type: "user",
@@ -78,10 +81,10 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue("");
-    setIsLoading(true);
-    setError(null);
+    setMessages((prev) => [...prev, userMessage]); // Add user message to chat
+    setInputValue(""); // Clear input field
+    setIsLoading(true); // Set loading state
+    setError(null); // Clear previous errors
 
     try {
       const response = await fetch(`${API_URL}/chat/question`, {
@@ -102,7 +105,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
       const botMessage: ChatMessage = {
         id: Date.now().toString(),
         type: "bot",
-        text: data.answer || "Sorry, I couldn't generate a response.",
+        text: data.answer || "Sorry, I didn't find relevant information to your question.",
         timestamp: new Date(),
       };
 
@@ -134,7 +137,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-lg flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-lg">Resume Chatbot</h3>
+          <h3 className="font-semibold text-lg">Chatbot</h3>
           <p className="text-sm text-blue-100">
             {chatbotStatus === "ready" ? "🟢 Online" : "🟡 Initializing..."}
           </p>
