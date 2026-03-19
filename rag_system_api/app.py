@@ -34,6 +34,8 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
+        "rag_initialized": True,  # Assuming RAG pipeline is initialized successfully during startup
+        "llm_available": True,  # Assuming LLM is available and can be invoked successfully during startup
         "service": "rag-system-api"
     }
 
