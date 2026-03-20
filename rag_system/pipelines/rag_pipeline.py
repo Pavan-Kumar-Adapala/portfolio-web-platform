@@ -19,10 +19,10 @@ class RAGPipeline:
     def run(self, query: str, top_k: int = 2) -> str:
 
         logger.info(f"Running RAG pipeline for query: {query}")
-
+        logger.info(f"Step 1: Retrieve relevant documents for the query using the retriever manager started.")
         relevent_documents = self.retriever.retrieve_relevant_documents(query, top_k=top_k)
-        logger.info(f"Retrieved {len(relevent_documents)} relevant documents for query: {query}")
 
+        logger.info(f"Step 2: Generate response using the LLM generator started.")
         answer = self.generator.generate_response(query, relevent_documents)
         logger.info(f"----------------------------- Final Answer -------------------------------------")
         logger.info(f"{answer}") 

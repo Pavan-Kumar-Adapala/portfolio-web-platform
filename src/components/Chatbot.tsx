@@ -29,14 +29,17 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Get API URL from environment
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  // const RAG_API_SERVER_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const RAG_API_SERVER_URL = (window as any).__ENV__?.RAG_API_SERVER_URL ?? "http://localhost:8000"
 
-  // Check chatbot status on mount
+  // Check chatbot status on mount and every 5 seconds until it's ready
   useEffect(() => {
-    checkChatbotStatus();
-    const interval = setInterval(checkChatbotStatus, 5000); // Check every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
+  if (chatbotStatus === "ready") return; // stop entirely once ready
+
+  checkChatbotStatus();
+  const interval = setInterval(checkChatbotStatus, 5000);
+  return () => clearInterval(interval);
+}, [chatbotStatus]);
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -46,7 +49,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
   // Function to check chatbot status
   const checkChatbotStatus = async () => {
   try {
-    const response = await fetch(`${API_URL}/health`);
+    const response = await fetch(`${RAG_API_SERVER_URL}/health`);
     const data = await response.json();
 
     if (response.ok && data.status === "ready") {  // ✅ removed rag_initialized and llm_available checks
@@ -87,12 +90,13 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     setError(null); // Clear previous errors
 
     try {
-      const response = await fetch(`${API_URL}/chat/question`, {
+      const response = await fetch(`${RAG_API_SERVER_URL}/chat/question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question: userQuestion }),
+        signal: AbortSignal.timeout(120000), // 120 seconds timeout for LLM response
       });
 
       if (!response.ok) {

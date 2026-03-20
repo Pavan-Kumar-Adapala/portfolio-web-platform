@@ -61,7 +61,7 @@ class VectorStoreManager:
             raise ValueError("Chunks must be a list of LangChain Document objects")
         
         try:
-            ids = [self._generate_chunk_id(chunk) for chunk in chunks]
+            ids = [self._generate_chunk_id(chunk) for chunk in chunks] # Generate unique IDs for each chunk, which helps prevent duplicates in the vector store when re-indexing the same documents multiple times (e.g., during development or if the indexing pipeline is run multiple times)
             self.vector_store_db.add_documents(documents=chunks, ids=ids)
             logger.info(f"Added {len(chunks)} chunks to vector store with generated IDs.")
             logger.info("Step 3: Adding chunks to vector store completed.")

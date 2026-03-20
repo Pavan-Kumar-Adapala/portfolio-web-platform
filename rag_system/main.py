@@ -1,16 +1,18 @@
 import logging
 import os
 import argparse
+import yaml
 from rag_system.loaders.document_loader import DocumentLoader
 from rag_system.splitters.pdf_splitter import PDFSplitter
 from rag_system.vectorstores.vector_store_manager import VectorStoreManager
 from rag_system.pipelines.indexing_pipeline import IndexingPipeline
-from langchain_ollama import ChatOllama
-from langchain.messages import SystemMessage, HumanMessage
+# from langchain_ollama import ChatOllama
+# from langchain.messages import SystemMessage, HumanMessage
 from rag_system.pipelines.rag_pipeline import RAGPipeline
 from rag_system.retrieval.retriever_manager import RetrieverManager
 from rag_system.generation.llm_generator import LLMGenerator
 
+CONFIGURATION_FILE_PATH = "./configurations/rag_system/config.yaml"
 
 # --------------- Set up logging configuration ----------------
 def configure_logging():
@@ -27,18 +29,30 @@ def main(query_retriever: str):
     configure_logging()  # Set up logging configuration
     logger = logging.getLogger(__name__)
     try:
-        # ---------------- Configurations ----------------
-        directory_path = "./pdf_documents_folder"
-        chroma_db_dir = "./db/chroma_db"
+        # ---------------- Load configuration from YAML file ----------------
+        with open(CONFIGURATION_FILE_PATH, "r") as config_file:
+            config = yaml.safe_load(config_file)
+
+        directory_path = config["directory_path"]
+        chroma_db_dir = config["chroma_db_dir"]
+        embeddings_model = config["embeddings_model"]
+        chunk_size = config["chunk_size"]
+        chunk_overlap = config["chunk_overlap"]
+        llm_model = config["llm_model"]
+        top_k = config["top_k"]
+
+        # ---------------- Print configuration details ----------------
         logger.info(f"Directory path: {directory_path}")
         logger.info(f"Chroma DB directory: {chroma_db_dir}")
-        embeddings_model="qwen3-embedding:4b"
-        llm_model = "llama3.1:latest" # "qwen3.5:4b"
-        top_k = 4  # Number of relevant documents to retrieve for the query
+        logger.info(f"Embeddings model: {embeddings_model}")
+        logger.info(f"Chunk size: {chunk_size}")
+        logger.info(f"Chunk overlap: {chunk_overlap}")
+        logger.info(f"LLM model: {llm_model}")
+        logger.info(f"Top k: {top_k}")
 
         # ---------------- Initialize components (in simple terms, instance objects) ----------------
         loader = DocumentLoader(directory_path=directory_path)
-        pdf_splitter = PDFSplitter(chunk_size=740, chunk_overlap=0)
+        pdf_splitter = PDFSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
         vector_store_manager = VectorStoreManager(db_persistent_directory=chroma_db_dir, embeddings_model=embeddings_model) # embeddings_model="nomic-embed-text" ) 
 
         
