@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 interface ChatMessage {
   id: string;
@@ -32,14 +32,6 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
   // const RAG_API_SERVER_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
   const RAG_API_SERVER_URL = (window as any).__ENV__?.RAG_API_SERVER_URL ?? "http://localhost:8000"
 
-  // Check chatbot status on mount and every 5 seconds until it's ready
-  useEffect(() => {
-  if (chatbotStatus === "ready") return; // stop entirely once ready
-
-  checkChatbotStatus();
-  const interval = setInterval(checkChatbotStatus, 5000);
-  return () => clearInterval(interval);
-}, [chatbotStatus]);
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -47,7 +39,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
   }, [messages]);
 
   // Function to check chatbot status
-  const checkChatbotStatus = async () => {
+  const checkChatbotStatus = useCallback(async () => {
   try {
     const response = await fetch(`${RAG_API_SERVER_URL}/health`);
     const data = await response.json();
@@ -63,7 +55,16 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
     setChatbotStatus("error");
     setError("Unable to connect to chatbot service. Is the backend running?");
   }
-};
+}, [RAG_API_SERVER_URL]);
+
+ // Check chatbot status on mount and every 5 seconds until it's ready
+  useEffect(() => {
+  if (chatbotStatus === "ready") return; // stop entirely once ready
+
+  checkChatbotStatus();
+  const interval = setInterval(checkChatbotStatus, 5000);
+  return () => clearInterval(interval);
+}, [chatbotStatus, checkChatbotStatus]);
 
   // Function to send user message and get bot response
   const sendMessage = async (e: React.FormEvent) => {
