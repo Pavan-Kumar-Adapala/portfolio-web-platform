@@ -1,0 +1,8 @@
+directory_path: pdf_documents_folder
+chroma_db_dir: db/chroma_db
+embeddings_model: qwen3-embedding:4b
+chunk_size: 740
+chunk_overlap: 0
+llm_model: llama3.1:latest # "qwen3.5:4b"
+top_k: 4 # Number of relevant documents to retrieve for the query
+tracker_file: db/indexed_files.json
