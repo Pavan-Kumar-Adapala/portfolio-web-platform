@@ -1,9 +1,9 @@
-import logging
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document  # Added for type checking
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 # --------------- PDFSplitter class definition ----------------
 class PDFSplitter:
@@ -40,9 +40,13 @@ class PDFSplitter:
         """
         if not documents or not all(isinstance(doc, Document) for doc in documents):
             raise ValueError("Documents must be a non-empty list of LangChain Document objects.")
+        try:
+            all_chunks = self.splitter.split_documents(documents)  # Use the split_documents method to split the text from the list of Document objects into chunks
+            logger.info(f"Split {len(documents)} documents into {len(all_chunks)} chunks.")
+        except Exception as e:
+            logger.error(f"Error occurred while splitting documents: {e}")
+            raise e
         
-        all_chunks = self.splitter.split_documents(documents)  # Use the split_documents method to split the text from the list of Document objects into chunks
-        logger.info(f"Split {len(documents)} documents into {len(all_chunks)} chunks.")
         for i, chunk in enumerate(all_chunks):
             chunk.metadata["source"] = chunk.metadata.get("source", "unknown")  # Preserve source metadata in each chunk
             chunk.metadata["page"] = chunk.metadata.get("page", "unknown")  # Preserve page metadata in each chunk

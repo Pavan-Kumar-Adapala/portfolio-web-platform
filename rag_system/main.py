@@ -1,4 +1,3 @@
-import logging
 import os
 import argparse
 import yaml
@@ -11,23 +10,16 @@ from rag_system.pipelines.indexing_pipeline import IndexingPipeline
 from rag_system.pipelines.rag_pipeline import RAGPipeline
 from rag_system.retrieval.retriever_manager import RetrieverManager
 from rag_system.generation.llm_generator import LLMGenerator
+from rag_system.utils.file_tracker import FileTracker
+from rag_system.utils.logger import Logger
 
 CONFIGURATION_FILE_PATH = "./configurations/rag_system/config.yaml"
 
-# --------------- Set up logging configuration ----------------
-def configure_logging():
-    logging.basicConfig(
-        level=logging.INFO,       
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        filemode="a",  # Append to the log file instead of overwriting it each time the program runs
-        filename="./rag_system/rag_system.log"  # Log file name, if not existed create one
-        )
+logger = Logger.get_logger(__name__)
 
 # --------------- Main function to run the indexing pipeline ----------------
 def main(query_retriever: str):
-    configure_logging()  # Set up logging configuration
-    logger = logging.getLogger(__name__)
+    Logger.configure_logging()  # Configure logging at the start of the application
     try:
         # ---------------- Load configuration from YAML file ----------------
         with open(CONFIGURATION_FILE_PATH, "r") as config_file:
@@ -45,27 +37,27 @@ def main(query_retriever: str):
         logger.info(f"Directory path: {directory_path}")
         logger.info(f"Chroma DB directory: {chroma_db_dir}")
         logger.info(f"Embeddings model: {embeddings_model}")
-        logger.info(f"Chunk size: {chunk_size}")
-        logger.info(f"Chunk overlap: {chunk_overlap}")
-        logger.info(f"LLM model: {llm_model}")
-        logger.info(f"Top k: {top_k}")
-
-        # ---------------- Initialize components (in simple terms, instance objects) ----------------
-        loader = DocumentLoader(directory_path=directory_path)
-        pdf_splitter = PDFSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+        logger.info(f"Chunk size: {chunk_size}, Chunk overlap: {chunk_overlap}")
+        logger.info(f"LLM model: {llm_model}, Top k: {top_k}")
+        # Always initialized — needed for RAG pipeline regardless of indexing
         vector_store_manager = VectorStoreManager(db_persistent_directory=chroma_db_dir, embeddings_model=embeddings_model) # embeddings_model="nomic-embed-text" ) 
-
+        file_tracker = FileTracker(pdf_documents_folder=directory_path)  # Initialize the FileTracker to track changes in the pdf_documents_folder
         
-        # ---------------- Run the indexing pipeline ----------------
-        # Only run the indexing pipeline if the chroma_db_dir does not exist, to avoid re-indexing every time the program runs (in production, you would typically have a separate process for indexing and a separate process for running the RAG pipeline, and you would not want to re-index every time you run the RAG pipeline)
-        if not os.path.exists(chroma_db_dir):
+        # Tracking changes in the pdf_documents_folder using the FileTracker utility class to determine if the indexing pipeline needs to be re-run
+        if file_tracker.check_for_changes():  # Check for changes in the pdf_documents_folder using the FileTracker utility class
+            logger.info(f"Changes detected in the {directory_path} folder. Running the indexing pipeline.")
+            loader = DocumentLoader(directory_path=directory_path)
+            pdf_splitter = PDFSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
             indexing_pipeline = IndexingPipeline(loader=loader, pdf_splitter=pdf_splitter, vector_store_manager=vector_store_manager)
-            logger.info("Indexing pipeline started.")
             indexing_pipeline.run_indexing_pipeline()
-            logger.info("Indexing pipeline completed successfully.")
-
+            try:
+                file_tracker.update_tracker()  # Update the tracked files after running the indexing pipeline
+                logger.info(f"Tracked files updated successfully after indexing.")
+            except Exception as e:
+                logger.error(f"Error updating tracked files after indexing: {e}")
         else:
-            logger.info(f"Chroma DB directory already exists {chroma_db_dir} . Skipping indexing pipeline.")
+            logger.info(f"No changes detected in the {directory_path} folder. Skipping the indexing pipeline.")
+        
 
         # ---------------- Test retrieval ----------------
 

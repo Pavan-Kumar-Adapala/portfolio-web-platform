@@ -6,3 +6,4 @@ chunk_overlap: 0
 llm_model: llama3.1:latest # "qwen3.5:4b"
 top_k: 4 # Number of relevant documents to retrieve for the query
 tracker_file: db/indexed_files.json
+log_file: logs/rag_system.log
