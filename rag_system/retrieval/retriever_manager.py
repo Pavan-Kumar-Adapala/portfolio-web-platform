@@ -1,8 +1,8 @@
-import logging
 from langchain_core.documents import Document
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 
 # --------------- RetrieverManager class definition ----------------

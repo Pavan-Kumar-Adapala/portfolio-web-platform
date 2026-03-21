@@ -1,9 +1,9 @@
-import os, logging
+import os
 from langchain_community.document_loaders import PyPDFDirectoryLoader
-
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 
 # --------------- DocumentLoader class definition ----------------
