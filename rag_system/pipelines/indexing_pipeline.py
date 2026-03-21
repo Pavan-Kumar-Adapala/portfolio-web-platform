@@ -1,11 +1,11 @@
-import logging
 from langchain_core.documents import Document  # Added for type checking
 from rag_system.loaders.document_loader import DocumentLoader
 from rag_system.splitters.pdf_splitter import PDFSplitter
 from rag_system.vectorstores.vector_store_manager import VectorStoreManager
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 
 # --------------- IndexingPipeline class definition ----------------

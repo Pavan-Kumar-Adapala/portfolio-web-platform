@@ -1,8 +1,9 @@
-import logging
 from rag_system.retrieval.retriever_manager import RetrieverManager
 from rag_system.generation.llm_generator import LLMGenerator
+from rag_system.utils.logger import Logger
 
-logger = logging.getLogger(__name__)
+# --------------- Set up logging configuration ----------------
+logger = Logger.get_logger(__name__)
 
 
 class RAGPipeline:
@@ -26,5 +27,6 @@ class RAGPipeline:
         answer = self.generator.generate_response(query, relevent_documents)
         logger.info(f"----------------------------- Final Answer -------------------------------------")
         logger.info(f"{answer}") 
+        logger.info(f"----------------------------- Final Answer -------------------------------------")
         
         return answer        

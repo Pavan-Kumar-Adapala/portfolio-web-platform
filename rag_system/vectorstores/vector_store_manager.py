@@ -1,11 +1,11 @@
-import logging
 import hashlib # Added for generating unique document IDs to prevent duplicates in the vector store
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain_core.documents import Document  # Added for type checking
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 
 # --------------- VectorStoreManager class definition ----------------

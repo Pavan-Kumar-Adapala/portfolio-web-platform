@@ -1,9 +1,9 @@
-import logging
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
+from rag_system.utils.logger import Logger
 
 # --------------- Set up logging configuration ----------------
-logger = logging.getLogger(__name__)
+logger = Logger.get_logger(__name__)
 
 # --------------- LLMGenerator class definition ----------------
 class LLMGenerator:

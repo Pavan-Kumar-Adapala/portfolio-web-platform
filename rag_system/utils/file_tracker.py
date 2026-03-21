@@ -1,12 +1,14 @@
 import yaml
-import logging
 import os
 import hashlib
 import json
+from rag_system.utils.logger import Logger
 
-logger = logging.getLogger(__name__)
+# --------------- Set up logging configuration ----------------
+logger = Logger.get_logger(__name__)
 
-CONFIGURATION_FILE_PATH = "../configurations/rag_system/config.yaml"
+
+CONFIGURATION_FILE_PATH = "./configurations/rag_system/config.yaml"
 
 # my intenstion is check any new file added to the pdf_documents_folder or any file updated or deleted, if yes then run the indexing pipeline, if no then skip the indexing pipeline, to avoid re-indexing every time the program runs (in production, you would typically have a separate process for indexing and a separate process for running the RAG pipeline, and you would not want to re-index every time you run the RAG pipeline)
 class FileTracker:
