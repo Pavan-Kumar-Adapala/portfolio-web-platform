@@ -21,10 +21,20 @@ class RAGSystemDependencies:
     """
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls) -> "RAGSystemDependencies":
+        """
+        Ensures only one instance of RAGSystemDependencies exists (singleton pattern).
+        Initializes dependencies only once at startup.
+        """
         if cls._instance is None:
-            cls._instance = super(RAGSystemDependencies, cls).__new__(cls)
-            cls._instance._initialize_dependencies()
+            instance = super(RAGSystemDependencies, cls).__new__(cls)
+            try:
+                instance._initialize_dependencies()
+            except Exception:
+                # Ensure _instance is not set if initialization fails
+                cls._instance = None
+                raise
+            cls._instance = instance
         return cls._instance
 
     @classmethod
