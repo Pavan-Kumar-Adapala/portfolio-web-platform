@@ -13,8 +13,21 @@ from rag_system.utils.logger import Logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Step 1: configure logging first
     Logger.configure_logging()
+    logger = Logger.get_logger(__name__)
+
+    # Step 2: initialize RAG singleton at startup
+    # - checks for PDF changes
+    # - runs indexing pipeline only if needed
+    # - initializes RAG pipeline ready to serve requests
+    logger.info(f'{"="*100}')
+    logger.info(f'{" Initializing RAG system dependencies at startup ":-^80}')
+    RAGSystemDependencies()
+    logger.info(f'{" RAG system dependencies initialized successfully ":-^80}')
     yield
+
+
 app = FastAPI(
     title="RAG System API",
     description="API for RAG-based question answering system",

@@ -25,8 +25,7 @@ class RAGPipeline:
 
         logger.info(f"Step 2: Generate response using the LLM generator started.")
         answer = self.generator.generate_response(query, relevent_documents)
-        logger.info(f"----------------------------- Final Answer -------------------------------------")
-        logger.info(f"{answer}") 
-        logger.info(f"----------------------------- Final Answer -------------------------------------")
+        logger.info(f'{" Final Answer ":-^80}')
+        logger.info(f"{answer}")
         
         return answer        

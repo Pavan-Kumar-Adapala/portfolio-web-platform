@@ -25,9 +25,10 @@ async def chat(request: ChatRequest):
             raise HTTPException(status_code=400, detail="Question must be a non-empty string.")
 
         deps   = RAGSystemDependencies()
-        logger.info(f"RAG dependencies initialized successfully. Running RAG pipeline for the incoming question.")
+        logger.info(f'{" Processing question ":-^80}')
         answer = deps.get_rag_pipeline().run(query=request.question, top_k=deps.get_top_k()) # before it main(retriever=request.question) but now we are directly calling the RAG pipeline with the question and top_k parameters
-        logger.info(f"RAG pipeline completed successfully. Returning response to the chatbot.")
+        logger.info(f'{" Generated answer to question ":-^80}')
+        logger.info(f'{"="*100}\n')
         return ChatResponse(question=request.question, answer=answer, status="success")
 
     except Exception as e:

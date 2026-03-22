@@ -8,21 +8,19 @@ from rag_system.utils.logger import Logger
 logger = Logger.get_logger(__name__)
 
 
-CONFIGURATION_FILE_PATH = "./configurations/rag_system/config.yaml"
-
 # my intenstion is check any new file added to the pdf_documents_folder or any file updated or deleted, if yes then run the indexing pipeline, if no then skip the indexing pipeline, to avoid re-indexing every time the program runs (in production, you would typically have a separate process for indexing and a separate process for running the RAG pipeline, and you would not want to re-index every time you run the RAG pipeline)
 class FileTracker:
     """
     Utility class to track files in the pdf_documents_folder and detect changes (new files, updated files, deleted files) to determine if the indexing pipeline needs to be re-run.
     """
 
-    def __init__(self, pdf_documents_folder):
-        # Load configuration from YAML file
-        with open(CONFIGURATION_FILE_PATH, "r") as config_file:
-            config = yaml.safe_load(config_file)
-        self.tracker_file = config.get("tracker_file", "db/indexed_files.json")
+    def __init__(self, pdf_documents_folder, tracker_file="db/indexed_files.json"):
+    
+        logger.info("FileTracker initialized.")
+        self.tracker_file = tracker_file
         self.pdf_documents_folder = pdf_documents_folder
         self.tracked_files = self.load_tracked_files()
+        
 
     def _hash_file(self, filepath: str) -> str:
         """

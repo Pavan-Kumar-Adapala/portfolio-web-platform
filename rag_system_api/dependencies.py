@@ -54,12 +54,15 @@ class RAGSystemDependencies:
         self.chunk_overlap    = config["chunk_overlap"]
         self.llm_model        = config["llm_model"]
         self.top_k            = config["top_k"]
+        self.file_tracker     = config["tracker_file"]
 
+        logger.info(f" Configuration Details: ")
         logger.info(f"Directory path: {self.directory_path}")
         logger.info(f"Chroma DB directory: {self.chroma_db_dir}")
         logger.info(f"Embeddings model: {self.embeddings_model}")
         logger.info(f"Chunk size: {self.chunk_size}, Chunk overlap: {self.chunk_overlap}")
         logger.info(f"LLM model: {self.llm_model}, Top k: {self.top_k}")
+        
 
         # Always initialized — connects to existing ChromaDB
         self.vector_store_manager = VectorStoreManager(
@@ -68,7 +71,7 @@ class RAGSystemDependencies:
         )
 
         # Conditional indexing
-        self.file_tracker = FileTracker(pdf_documents_folder=self.directory_path)
+        self.file_tracker = FileTracker(pdf_documents_folder=self.directory_path, tracker_file=self.file_tracker)  # Initialize the FileTracker to track changes in the pdf_documents_folder
 
         if self.file_tracker.check_for_changes():
             logger.info(f"Changes detected in {self.directory_path}. Running indexing pipeline.")
@@ -113,7 +116,7 @@ class RAGSystemDependencies:
         try:
             with open(config_file_path, "r") as file:
                 config = yaml.safe_load(file)
-            logger.info(f"Configuration loaded from {config_file_path}")
+            logger.info(f"Configuration details loaded from {config_file_path} file")
             return config
         except FileNotFoundError:
             logger.error(f"Configuration file not found: {config_file_path}")
