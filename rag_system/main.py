@@ -32,6 +32,7 @@ def main(query_retriever: str):
         chunk_overlap = config["chunk_overlap"]
         llm_model = config["llm_model"]
         top_k = config["top_k"]
+        file_tracker     = config["tracker_file"]
 
         # ---------------- Print configuration details ----------------
         logger.info(f"Directory path: {directory_path}")
@@ -41,7 +42,7 @@ def main(query_retriever: str):
         logger.info(f"LLM model: {llm_model}, Top k: {top_k}")
         # Always initialized — needed for RAG pipeline regardless of indexing
         vector_store_manager = VectorStoreManager(db_persistent_directory=chroma_db_dir, embeddings_model=embeddings_model) # embeddings_model="nomic-embed-text" ) 
-        file_tracker = FileTracker(pdf_documents_folder=directory_path)  # Initialize the FileTracker to track changes in the pdf_documents_folder
+        file_tracker = FileTracker(pdf_documents_folder=directory_path, tracker_file=file_tracker)  # Initialize the FileTracker to track changes in the pdf_documents_folder
         
         # Tracking changes in the pdf_documents_folder using the FileTracker utility class to determine if the indexing pipeline needs to be re-run
         if file_tracker.check_for_changes():  # Check for changes in the pdf_documents_folder using the FileTracker utility class
