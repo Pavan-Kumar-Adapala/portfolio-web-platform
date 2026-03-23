@@ -1,69 +1,86 @@
+# Docker Compose file for the RAG System with Ollama, Frontend
 services:
-  # Ollama LLM Service
   ollama:
-    image: ollama/ollama:latest
-    container_name: portfolio-ollama
+    image: ollama/ollama
+    container_name: ollama
     ports:
-      - "11434:11434"
+      - "11434:11434" 
     volumes:
       - ollama_data:/root/.ollama
-    environment:
-      - OLLAMA_HOST=0.0.0.0:11434
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "ollama list || exit 1"]
-      interval: 10s
-      timeout: 15s
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
       retries: 10
       start_period: 30s
     networks:
-      - portfolio-network
+      - chatbot-network
 
-  # Backend - FastAPI Service
-  backend:
-    build:
-      context: ..
-      dockerfile: backend/Dockerfile
-    container_name: portfolio-backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ../backend:/app
-      - ../data:/app/data
+  ollama-init:
+    image: ollama/ollama
+    container_name: ollama-init
     environment:
-      - PYTHONUNBUFFERED=1
-      - OLLAMA_URL=http://ollama:11434
-      - CORS_ORIGINS=*
+      - OLLAMA_HOST=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-llama3.1:latest}
+      - EMBEDDINGS_MODEL=${EMBEDDINGS_MODEL:-qwen3-embedding:4b}
+    entrypoint: >
+      /bin/sh -c "
+        echo 'Waiting for Ollama server...';
+        until curl -sf http://ollama:11434/api/tags; do sleep 3; done;
+        echo 'Pulling LLM model: $LLM_MODEL';
+        ollama pull $LLM_MODEL;
+        echo 'Pulling embedding model: $EMBEDDINGS_MODEL';
+        ollama pull $EMBEDDINGS_MODEL;
+        echo 'All models ready.';
+      "
     depends_on:
       ollama:
         condition: service_healthy
     networks:
-      - portfolio-network
+      - chatbot-network
+    restart: "no"
+ 
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.rag
+    container_name: rag_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost,http://localhost:80}
+      - OLLAMA_HOST=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-llama3.1:latest} 
+      - EMBEDDINGS_MODEL=${EMBEDDINGS_MODEL:-qwen3-embedding:4b}
+    volumes:
+      - chroma_data:/rag/db/chroma_db
+      - tracker_data:/rag/db
+      - ../pdf_documents_folder:/rag/pdf_documents_folder:ro
+      - ../logs:/rag/logs
+    networks:
+      - chatbot-network
+    depends_on:
+      ollama:
+        condition: service_healthy
+      ollama-init:
+        condition: service_completed_successfully
     restart: unless-stopped
-
-  # Frontend - Vite Development Server
   frontend:
     build:
       context: ..
-      dockerfile: Dockerfile.dev
-    container_name: portfolio-frontend
+      dockerfile: Dockerfile
+    container_name: frontend
     ports:
-      - "5173:5173"
-    volumes:
-      - ..:/app
-      - /app/node_modules
+      - "80:80"
     environment:
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-    networks:
-      - portfolio-network
-    stdin_open: true
-    tty: true
+      - RAG_API_SERVER_URL=${RAG_API_SERVER_URL:-http://localhost:8000}
     restart: unless-stopped
-
+    networks:
+      - chatbot-network
 volumes:
   ollama_data:
-
+  chroma_data:
+  tracker_data:
 networks:
-  portfolio-network:
-    driver: bridge
+  chatbot-network:
