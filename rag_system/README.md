@@ -1,6 +1,6 @@
 # RAG Implementation
 
-Requirements / Dependencies:
+## Requirements / Dependencies:
 
 - Requires Python 3.10+ to use LangChain (I am using Python 3.13.5)
 - Download and install Ollama (https://ollama.com/download)
@@ -20,12 +20,111 @@ Requirements / Dependencies:
   - ollama pull <name-of-model>
   - To chat directly with a model from the command line, use ollama run <name-of-model>
 - pip install langchain langchain-text-splitters langchain-community langchain-ollama langchain-chroma langchain-core python_dotenv pypdf pillow
+- Embeddings Model: ollama pull qwen3-embedding:4b
+- LLM Model: ollama pull llama3.1:latest
 
-Test the rag system using the below command:
+## RAG System Testing (Local env)
+
+Use below command to test the rag system in local environment:
 
 ```
-python -m rag_system.main
+python -m rag_system.main -q "How Many years of experience does the candidate have?"
 ```
+
+Check logs inside **logs folder**
+
+---
+
+## RAG System Testing in Cloud
+
+- In AWS, Launch EC2 (Ubuntu)
+
+- SSH into EC2
+  - git --version
+  - python3 --version
+
+- Install pip
+
+  ```
+  sudo apt install -y python3-pip
+
+  pip3 --version
+  ```
+
+- Install ollama
+
+  ```
+  curl -fsSL https://ollama.com/install.sh | sh
+
+  ollama --version
+
+  ollama pull llama3.1:latest
+
+  ollama pull qwen3-embedding:4b
+  ```
+
+  systemctl status ollama
+
+  ollama list
+
+- Install Node.js + npm
+
+  ```
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+
+  sudo apt install -y nodejs
+
+  node -v
+
+  npm -v
+  ```
+
+- Install Python dependencies
+
+```bash
+  # Install venv support
+  sudo apt install -y python3-venv python3-full
+
+  # Create virtual environment inside the project
+  cd ~/portfolio-web-platform
+  python3 -m venv venv
+
+  # Activate it
+  source venv/bin/activate
+
+  pip3 install -r rag_system/requirements.txt
+
+  pip3 install -r rag_system_api/requirements.txt
+```
+
+- Run Backend
+
+  ```
+  uvicorn rag_system_api.app:app --host 0.0.0.0 --port 8000 &
+  ```
+
+- Install Apache
+
+  ```
+  sudo apt install apache2
+
+  sudo systemctl status apache2
+  ```
+
+- Install Node dependencies and build frontend
+
+  ```
+  # Build the production bundle
+  npm run build
+
+  # Copy to nginx
+  sudo cp -r dist/* /var/www/html/
+
+  # Restart nginx
+  sudo systemctl restart  apache2
+  ```
+
+# Reference links:
 
 ## LangChain
 
@@ -64,5 +163,7 @@ The LangChain ecosystem includes:
       2 levels - Proposition-Based Chunking, Group Chunk
 
 ## Ollama
+
+Ollama Installation: https://docs.ollama.com/linux
 
 LangChain and Ollama Integration Documentation Link: https://docs.langchain.com/oss/python/integrations/providers/ollama

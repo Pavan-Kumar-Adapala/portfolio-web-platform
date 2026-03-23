@@ -1,4 +1,5 @@
 import yaml
+import os
 from rag_system.loaders.document_loader import DocumentLoader
 from rag_system.splitters.pdf_splitter import PDFSplitter
 from rag_system.vectorstores.vector_store_manager import VectorStoreManager
@@ -42,7 +43,7 @@ class RAGSystemDependencies:
         """Reset singleton — call before reindex to force re-initialization."""
         logger.info("RAGSystemDependencies singleton reset.")
         cls._instance = None
-
+    
     def _initialize_dependencies(self):
         config = self._load_configuration(CONFIGURATION_FILE_PATH)
 
@@ -55,6 +56,8 @@ class RAGSystemDependencies:
         self.llm_model        = config["llm_model"]
         self.top_k            = config["top_k"]
         self.file_tracker     = config["tracker_file"]
+        self.ollama_host      = config["ollama_host"]
+
 
         logger.info(f" Configuration Details: ")
         logger.info(f"Directory path: {self.directory_path}")
@@ -62,12 +65,14 @@ class RAGSystemDependencies:
         logger.info(f"Embeddings model: {self.embeddings_model}")
         logger.info(f"Chunk size: {self.chunk_size}, Chunk overlap: {self.chunk_overlap}")
         logger.info(f"LLM model: {self.llm_model}, Top k: {self.top_k}")
+        logger.info(f"Ollama host: {self.ollama_host}")
         
 
         # Always initialized — connects to existing ChromaDB
         self.vector_store_manager = VectorStoreManager(
             db_persistent_directory=self.chroma_db_dir,
-            embeddings_model=self.embeddings_model
+            embeddings_model=self.embeddings_model,
+            ollama_host=self.ollama_host 
         )
 
         # Conditional indexing
@@ -83,7 +88,7 @@ class RAGSystemDependencies:
         self.retriever_manager = RetrieverManager(
             vector_store_manager=self.vector_store_manager
         )
-        self.llm_generator = LLMGenerator(model_name=self.llm_model)
+        self.llm_generator = LLMGenerator(model_name=self.llm_model, ollama_host=self.ollama_host )
         self.rag_pipeline  = RAGPipeline(
             retriever=self.retriever_manager,
             generator=self.llm_generator
@@ -117,7 +122,28 @@ class RAGSystemDependencies:
             with open(config_file_path, "r") as file:
                 config = yaml.safe_load(file)
             logger.info(f"Configuration details loaded from {config_file_path} file")
+
+            # Environment variables override YAML values at runtime
+            overrides = {
+                "directory_path":   os.getenv("PDF_DIR"),
+                "chroma_db_dir":    os.getenv("CHROMA_DB_DIR"),
+                "embeddings_model": os.getenv("EMBEDDINGS_MODEL"),
+                "llm_model":        os.getenv("LLM_MODEL"),
+                "tracker_file":     os.getenv("TRACKER_FILE"),
+                "ollama_host":     os.getenv("OLLAMA_HOST"),
+                "top_k":            int(os.getenv("TOP_K")) if os.getenv("TOP_K") else None,
+                "chunk_size":       int(os.getenv("CHUNK_SIZE")) if os.getenv("CHUNK_SIZE") else None,
+                "chunk_overlap":    int(os.getenv("CHUNK_OVERLAP")) if os.getenv("CHUNK_OVERLAP") else None,
+            }
+
+            # Only apply overrides that are actually set
+            for key, value in overrides.items():
+                if value is not None:
+                    config[key] = value
+                    logger.info(f"Configuration override: {key} set to {value} from environment variable.")
+
             return config
+        
         except FileNotFoundError:
             logger.error(f"Configuration file not found: {config_file_path}")
             raise

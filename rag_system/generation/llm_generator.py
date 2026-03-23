@@ -10,8 +10,8 @@ class LLMGenerator:
     """
     Generates responses from a language model (LLM) based on a system message and combined input (which includes the user query and retrieved documents as context) in a RAG system.
     """
-    def __init__(self, model_name: str = "llama3.1:latest") -> None:
-        self.llm_model = ChatOllama(model=model_name)  # Initialize the LLM model
+    def __init__(self, model_name: str = "llama3.1:latest", ollama_host: str = "http://localhost:11434") -> None:
+        self.llm_model = ChatOllama(model=model_name, base_url=ollama_host)  # Initialize the LLM model
         logger.info("LLMGenerator initialized with provided LLM model.")
 
     def generate_response(self, query: str, relevent_documents: list) -> str:
