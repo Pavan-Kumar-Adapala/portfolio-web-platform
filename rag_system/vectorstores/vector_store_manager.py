@@ -15,7 +15,7 @@ class VectorStoreManager:
     This is often done using a VectorStore and Embeddings model (e.g., qwen3-embedding:4b, nomic-embed-text:v1.5).
     """
 
-    def __init__(self, db_persistent_directory: str = "../db/chroma_db", embeddings_model: str = "qwen3-embedding:4b") -> None:
+    def __init__(self, db_persistent_directory: str = "../db/chroma_db", embeddings_model: str = "qwen3-embedding:4b", ollama_host: str = "http://localhost:11434") -> None:
         """
         Initialize VectorStoreManager
 
@@ -24,7 +24,7 @@ class VectorStoreManager:
             embeddings_model (str): Model name to use for embeddings
         """
         try:
-            self.embeddings_model = OllamaEmbeddings(model=embeddings_model)
+            self.embeddings_model = OllamaEmbeddings(model=embeddings_model, base_url=ollama_host)
             logger.info(f"Initialized OllamaEmbeddings with model: {embeddings_model}")
             self.vector_store_db = Chroma(
                                         collection_name="resume_pdf_chunks",

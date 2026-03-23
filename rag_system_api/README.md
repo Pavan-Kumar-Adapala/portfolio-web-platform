@@ -72,10 +72,10 @@ The API uses the following default configurations (can be overridden with enviro
 
 ## Integration with Frontend
 
-This API is designed to work with the portfolio frontend. Set the `VITE_API_URL` environment variable in your frontend to point to this API:
+This API is designed to work with the portfolio frontend. Set the `RAG_API_SERVER_URL` environment variable in your frontend to point to this API:
 
 ```bash
-export VITE_API_URL=http://localhost:8000
+export RAG_API_SERVER_URL=http://localhost:8000
 ```
 
 ## Dependencies

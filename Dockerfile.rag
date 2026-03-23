@@ -1,0 +1,67 @@
+# This Dockerfile sets up the RAG System including the API and its dependencies.
+
+ARG PYTHON_VERSION=3.13-slim
+# Build stage
+FROM python:${PYTHON_VERSION} AS builder
+
+# Maintainer information
+LABEL maintainer="Pavan Kumar Adapala <pavankumar.biw@gmail.com>"
+
+# Set the working directory in the container
+WORKDIR /rag
+
+# Install system dependencies for building Python packages and running the API. Only compilers needed in builder
+RUN apt-get update && apt-get install -y \
+    gcc g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create necessary directories for the build stage
+RUN mkdir -p ./rag_system ./rag_system_api ./configurations ./pdf_documents_folder ./db/chroma_db ./logs
+
+
+# Copy the requirements file and install dependencies
+COPY rag_system/requirements.txt ./rag_system/requirements.txt
+COPY rag_system_api/requirements.txt ./rag_system_api/requirements.txt
+
+# Install virtualenv and create a virtual environment for the builder stage, so it travels with /rag to final stage
+RUN python -m venv /rag/venv
+ENV PATH="/rag/venv/bin:$PATH"
+
+# Install Python dependencies in the virtual environment
+RUN /rag/venv/bin/pip install --no-cache-dir \
+    -r rag_system/requirements.txt \
+    -r rag_system_api/requirements.txt
+
+# Copy the application code
+COPY rag_system ./rag_system
+COPY rag_system_api ./rag_system_api
+COPY configurations ./configurations
+
+
+# ----------- Final stage -----------
+FROM python:${PYTHON_VERSION} AS final
+
+LABEL maintainer="Pavan Kumar Adapala <pavankumar.biw@gmail.com>"
+
+# Set the working directory in the container
+WORKDIR /rag
+
+# Only curl needed in final — for HEALTHCHECK
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copies app code + venv + empty dirs — gcc/g++ left behind
+COPY --from=builder /rag /rag
+
+ENV PATH="/rag/venv/bin:$PATH"
+
+# Expose the API port
+EXPOSE 8000
+
+# API health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Final command to run the API using uvicorn from the virtual environment
+CMD ["/rag/venv/bin/uvicorn", "rag_system_api.app:app", "--host", "0.0.0.0", "--port", "8000"]
