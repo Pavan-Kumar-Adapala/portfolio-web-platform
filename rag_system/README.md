@@ -43,86 +43,95 @@ Check logs inside **logs folder**
   - git --version
   - python3 --version
 
-- Install pip
+  - Install Docker
 
   ```
-  sudo apt install -y python3-pip
+  install_docker.sh
 
-  pip3 --version
-  ```
+        #!/bin/bash
+        sudo apt update
+        sudo apt install ca-certificates curl gnupg lsb-release -y
 
-- Install ollama
+        # Add GPG Key
+        sudo install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-  ```
-  curl -fsSL https://ollama.com/install.sh | sh
+        # Add Repository to Apt sources
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-  ollama --version
+        sudo apt update
 
-  ollama pull llama3.1:latest
-
-  ollama pull qwen3-embedding:4b
-  ```
-
-  systemctl status ollama
-
-  ollama list
-
-- Install Node.js + npm
+        sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
   ```
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 
-  sudo apt install -y nodejs
+  ```
+  chmod +x install_docker.sh
+  ./install_docker.sh
 
-  node -v
+  # Add your user to docker group
+  sudo usermod -aG docker $USER
 
-  npm -v
+  # Verify
+  docker --version
+  docker compose version
   ```
 
-- Install Python dependencies
+- Clone the repo
 
-```bash
-  # Install venv support
-  sudo apt install -y python3-venv python3-full
+  ```
+  git clone  <https:....>
+  ```
 
-  # Create virtual environment inside the project
-  cd ~/portfolio-web-platform
-  python3 -m venv venv
+  ```
+  cd  <project_folder>
 
-  # Activate it
-  source venv/bin/activate
+  # Edit .env
+  # Replace with your actual EC2 public IP:
+  RAG_API_SERVER_URL=http://YOUR_EC2_IP:8000
+  CORS_ORIGINS=http://YOUR_EC2_IP
+  ```
 
-  pip3 install -r rag_system/requirements.txt
+- Run the docker compose
 
-  pip3 install -r rag_system_api/requirements.txt
+```
+cd ~/portfolio-web-platform/docker
+docker compose up -d --build
 ```
 
-- Run Backend
+- Check all container are running or not
 
   ```
-  uvicorn rag_system_api.app:app --host 0.0.0.0 --port 8000 &
+  docker compose ps
   ```
 
-- Install Apache
+- Check the logs
 
   ```
-  sudo apt install apache2
+  # All models ready
+  docker compose logs -f ollama-init
 
-  sudo systemctl status apache2
+  # Check RAG pipeline initialized and ready
+  docker compose logs -f backend
   ```
 
-- Install Node dependencies and build frontend
+- Security groups
 
-  ```
-  # Build the production bundle
-  npm run build
+```
+Add these rules:
 
-  # Copy to nginx
-  sudo cp -r dist/* /var/www/html/
+| Type | Protocol | Port | Source |
+|------|----------|------|--------|
+| SSH | TCP | 22 | My IP |
+| HTTP | TCP | 80 | 0.0.0.0/0 |
+| Custom TCP | TCP | 8000 | 0.0.0.0/0 |
+```
 
-  # Restart nginx
-  sudo systemctl restart  apache2
-  ```
+I want to open browser and test in my laptop
 
 # Reference links:
 
