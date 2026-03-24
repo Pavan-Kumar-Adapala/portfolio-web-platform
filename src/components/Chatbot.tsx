@@ -97,7 +97,7 @@ export function Chatbot({ isOpen = true, onClose }: ChatbotProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question: userQuestion }),
-        signal: AbortSignal.timeout(120000), // 120 seconds timeout for LLM response
+        signal: AbortSignal.timeout(360000), // 6 minutes timeout for LLM response
       });
 
       if (!response.ok) {
