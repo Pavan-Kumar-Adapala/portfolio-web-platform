@@ -12,6 +12,8 @@
   </head>
   <body>
     <div id="root"></div>
+     <!-- Must load before main.tsx so window.__ENV__ is available -->
+    <script src="/env.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
