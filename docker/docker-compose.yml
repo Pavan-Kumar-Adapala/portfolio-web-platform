@@ -27,8 +27,11 @@ services:
     entrypoint: >
       /bin/sh -c "
         echo 'Waiting for Ollama server...';
-        until curl -sf http://ollama:11434/api/tags; do sleep 3; done;
-        echo 'Pulling LLM model: $LLM_MODEL';
+        until ollama list > /dev/null 2>&1; do
+          echo 'Not ready yet, retrying...';
+          sleep 3;
+        done;
+        echo 'Ollama ready. Pulling LLM: $LLM_MODEL';
         ollama pull $LLM_MODEL;
         echo 'Pulling embedding model: $EMBEDDINGS_MODEL';
         ollama pull $EMBEDDINGS_MODEL;
