@@ -72,7 +72,7 @@ services:
   frontend:
     build:
       context: ..
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
     container_name: frontend
     ports:
       - "80:80"
