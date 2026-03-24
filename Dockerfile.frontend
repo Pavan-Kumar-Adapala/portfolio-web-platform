@@ -22,7 +22,12 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 # Copy the custom Nginx configuration file to default Nginx configuration file 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Add entrypoint script that injects env.js at container startup
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 # Expose port 80 for the Nginx server
 EXPOSE 80
+# Entry point to run the custom script that injects environment variables and starts Nginx
+ENTRYPOINT ["/docker-entrypoint.sh"]
 # Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]

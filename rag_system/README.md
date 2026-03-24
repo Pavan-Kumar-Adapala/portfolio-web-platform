@@ -101,6 +101,10 @@ Check logs inside **logs folder**
 ```
 cd ~/portfolio-web-platform/docker
 docker compose up -d --build
+
+or
+
+docker compose up -d
 ```
 
 - Check all container are running or not
