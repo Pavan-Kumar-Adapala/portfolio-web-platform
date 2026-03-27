@@ -41,6 +41,241 @@ const TiltCard = ({ children }) => {
   );
 };
 
+// ---------------- Projects Data ----------------
+const projects = [
+  {
+    title: 'AI-powered portfolio chatbot with RAG system',
+    problem: 'Static portfolios force visitors to hunt for answers — most leave before finding them.',
+    result: '0 hallucinations · 3–4 min response reduced to ~1 min via Singleton pattern.',
+    description: 'Built a resume-grounded chatbot so hiring managers can ask natural questions and get factual answers instantly. RAG prevents LLM hallucination by grounding every response in actual resume chunks.',
+    image: '/images/rag_chatbot.png',
+    technologies: ['FastAPI', 'LangChain', 'ChromaDB', 'Ollama · Llama 3.1', 'React', 'Docker', 'AWS EC2'],
+    architecture: '/images/rag_chatbot.png',
+    github: 'https://github.com/Pavan-Kumar-Adapala/portfolio-web-platform',
+    demo: '#',
+    category: 'AI, RAG, DevOps, Docker',
+    detailedDescription: [
+      'Problem: LLMs hallucinate — a plain LLM answering resume questions would fabricate answers. RAG solves this by grounding every response in actual document chunks.',
+      'Built full RAG pipeline: PDF ingestion → recursive text splitting (740-char chunks) → qwen3-embedding:4b embeddings → ChromaDB vector store → top-4 similarity retrieval → Llama 3.1 generation.',
+      'Identified critical bottleneck: every chat message rebuilt the entire pipeline from scratch — YAML config reload, MD5 file scan, ChromaDB reconnect, model init — adding 3–4 minutes of overhead per question.',
+      'Applied Singleton design pattern via RAGSystemDependencies class — initialized once at FastAPI startup via lifespan event, reused across all requests. Overhead dropped to zero.',
+      'Implemented incremental indexing with MD5 file tracking — pipeline only re-runs when PDFs actually change. SHA-256 chunk IDs prevent duplicate vectors on re-index.',
+      'Containerized with multi-stage Docker builds — builder compiles C extensions, final stage ships only the runtime. Orchestrated with docker-compose on AWS EC2.',
+      'Debugged a production runtime injection failure: browser JS was calling localhost:8000 instead of the EC2 IP. Root cause — env vars stay in the container and never reach the browser. Fixed with docker-entrypoint.sh writing env-config.js before Nginx starts.',
+    ],
+    metrics: {
+      'Hallucinations': '0',
+      'Overhead per request': '0s (singleton)',
+      'Before fix': '3–4 min/msg',
+      'Re-index trigger': 'Only on PDF change',
+    }
+  },
+  {
+    title: 'End-to-end GitOps CI/CD pipeline for cloud-native deployment',
+    problem: 'Manual deployments had no security gates — insecure images could reach production undetected.',
+    result: '0 manual steps · 100% builds scanned · 35% code quality improvement · 2× smaller images.',
+    description: 'Designed a fully automated GitOps pipeline eliminating human error from release cycles while embedding DevSecOps controls — SonarQube and Trivy — at every stage before production.',
+    image: '/images/gitops_cicd_gen_ani.gif',
+    technologies: ['GitHub Actions', 'Argo CD', 'Kubernetes', 'Docker', 'SonarQube', 'Trivy', 'Nexus', 'AWS ALB', 'Nginx'],
+    architecture: '/images/gitops_cicd_gen_ani.gif',
+    github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
+    demo: '/images/gitops.svg',
+    category: 'Web Application, DevSecOps, GitOps, CI/CD, AWS',
+    detailedDescription: [
+      'Problem: Deployment had no automated security checks — insecure container images and code with vulnerabilities could be deployed without any gate.',
+      'Embedded SonarQube (SAST) and Trivy (container scanning) as pipeline gates — insecure artifacts are rejected automatically before they can reach any environment.',
+      'Implemented GitOps delivery with Argo CD: every deployment is a Git commit, enabling one-command declarative rollback and full audit trail.',
+      'Reduced Docker image size by 200% using multi-stage builds — smaller attack surface and faster pull times in production.',
+      'Architected AWS networking with ALB, IAM least-privilege, and HTTPS-only access following security best practices.',
+    ],
+    metrics: {
+      'Code quality improvement': '35%',
+      'Image size reduction': '200%',
+      'Security scan coverage': '100%',
+      'Manual deploy steps': '0',
+    }
+  },
+  {
+    title: 'CI/CD pipeline for safety-critical ADAS software',
+    problem: 'Manual ECU flashing setup caused frequent build failures and delayed releases for an autonomous parking system.',
+    result: '40% setup time reduction · 0 flashing failures · ISO 27001 compliant pipeline.',
+    description: 'Automated the full ECU flashing pipeline at Robert Bosch for an autonomous parking system — eliminating manual errors while enforcing ISO 27001 security compliance automatically.',
+    image: '/images/ADAS_CICD.png',
+    technologies: ['Jenkins', 'JFrog Artifactory', 'Grafana', 'PostgreSQL', 'Python', 'Bash', 'Bitbucket', 'JIRA'],
+    architecture: '/images/ADAS_CICD.png',
+    github: '#',
+    demo: '#',
+    category: 'ADAS, CI/CD, Automation',
+    detailedDescription: [
+      'Problem: Engineers manually prepared PDX containers for ECU flashing — a time-consuming, error-prone step that caused build failures and delayed releases for a safety-critical system.',
+      'Automated PDX container generation directly from versioned binaries stored in JFrog Artifactory — validated, signed, and ready for flashing without any manual step.',
+      'Integrated ISO 27001-aligned security and quality checks as pipeline gates — compliance is enforced automatically, not audited after the fact.',
+      'Reduced setup time by 40%, eliminated all flashing failures, and accelerated release cycles for a safety-critical automotive control system.',
+    ],
+    metrics: {
+      'Setup time reduction': '40%',
+      'Flashing failures': '0',
+      'Compliance': 'ISO 27001',
+      'Manual steps eliminated': '100%',
+    }
+  },
+  {
+    title: 'Centralized observability platform for hybrid infrastructure',
+    problem: 'Fragmented monitoring across AWS, Kubernetes, and on-prem RHEL meant incidents were found by users, not engineers.',
+    result: 'Proactively caught CPU/memory bottlenecks before pod restarts. MTTR significantly reduced.',
+    description: 'Built a unified Prometheus-Grafana observability stack across AWS VMs, Kubernetes clusters, and on-premise RHEL servers — making infrastructure visible at every layer from a single dashboard.',
+    image: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    technologies: ['Prometheus', 'Grafana', 'Node Exporter', 'cAdvisor', 'AWS', 'VMware', 'OpenVPN', 'Nginx', 'RHEL 9'],
+    architecture: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    github: 'https://github.com/Pavan-Kumar-Adapala/prometheus_hybrid_monitoring_proj',
+    demo: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    category: 'Monitoring',
+    detailedDescription: [
+      'Problem: AWS VMs, Kubernetes pods, and on-premise RHEL servers had separate monitoring setups — correlating an incident across all three was manual and slow. Bottlenecks were invisible until they caused outages.',
+      'Deployed Prometheus with Node Exporter and cAdvisor across all environments — single pane of glass for CPU, memory, disk, and container metrics.',
+      'Identified CPU and memory bottlenecks proactively — optimized Kubernetes resource requests and limits before pod restarts occurred in production.',
+      'Custom dashboards and alerting enabled root-cause analysis in minutes instead of hours, significantly reducing MTTR and improving production stability.',
+    ],
+    metrics: {
+      'Infrastructure layers unified': '3',
+      'MTTR': 'Significantly reduced',
+      'Production stability': 'Improved',
+      'Alert coverage': '100% of services',
+    }
+  },
+  {
+    title: 'Secure serverless static website hosting on AWS',
+    problem: 'Static sites do not need servers — yet most setups pay for them and accept unnecessary risk.',
+    result: '<$1/month cost · <80ms global latency · 0% public S3 access risk · 0 server ops.',
+    description: 'Deployed a zero-maintenance, sub-dollar-per-month hosting solution using S3 and CloudFront with enforced Origin Access Identity — no server, no ops, no exposure.',
+    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['AWS S3', 'AWS CloudFront', 'AWS IAM', 'Origin Access Identity', 'Terraform'],
+    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/AWS_serverless_static_website.png?raw=true',
+    github: 'https://github.com/Pavan-Kumar-Adapala/Portfolio_project_Adapala',
+    demo: '#',
+    category: 'AWS, Serverless',
+    detailedDescription: [
+      'Configured Origin Access Identity (OAI) and S3 bucket policies to ensure the bucket is never publicly accessible — all access flows through CloudFront only, eliminating direct S3 exposure.',
+      'CloudFront CDN delivers content globally at under 80ms latency while handling caching, compression, and HTTPS termination.',
+      'Infrastructure provisioned with Terraform — reproducible, version-controlled, zero manual configuration drift.',
+    ],
+    metrics: {
+      'Hosting cost': '<$1/month',
+      'Global latency': '<80ms',
+      'Public access risk': '0%',
+      'Server ops': '0',
+    }
+  },
+  {
+    title: 'Hardware asset management automation at Bosch',
+    problem: '€15,000 of equipment was unaccounted for annually due to manual, inconsistent asset tracking across the EPS2 department.',
+    result: '€15,000 cost savings · 80% manual effort reduction · 100% department-wide coverage.',
+    description: 'Built Python automation integrating JIRA and Confluence APIs to track hardware assets from acquisition to retirement across all storage areas and test benches at Robert Bosch.',
+    image: 'https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['Python', 'JIRA REST API', 'Confluence API', 'Seventhings'],
+    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/hardware_management.png?raw=true',
+    github: '#',
+    demo: '#',
+    category: 'Automation',
+    detailedDescription: [
+      'Problem: No standardized QR code system, no cross-departmental visibility, and no automated reconciliation — assets left labs without any record.',
+      'Built Python automation integrating JIRA REST API and Confluence API to track assets from acquisition to retirement across all storage areas and test benches.',
+      'Implemented micro-level tracking in Seventhings — each asset has a unique identity tied to its physical location, visible across departments.',
+      'Result: €15,000 annual savings, 80% reduction in manual tracking effort, 100% coverage across the entire department.',
+    ],
+    metrics: {
+      'Cost savings': '€15,000',
+      'Manual effort reduction': '80%',
+      'Asset coverage': '100%',
+      'Tracking accuracy': 'Real-time',
+    }
+  },
+  {
+    title: 'Python ETL pipeline and KPI dashboard for team performance',
+    problem: 'Focus time data was buried in siloed PDFs and calendars — team leads had no visibility into productivity.',
+    result: '15% productivity improvement · 100% KPI visibility · fully automated data collection.',
+    description: 'Built a modular ETL pipeline with Selenium-based extraction, Pandas processing, and a Tkinter desktop dashboard — turning scattered focus time data into actionable team insights at Robert Bosch.',
+    image: 'https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['Python', 'Tkinter', 'Selenium', 'Pandas', 'NumPy', 'Matplotlib', 'ETL', 'Linux'],
+    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
+    github: '#',
+    demo: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
+    category: 'KPI, ETL Pipeline, Automation',
+    detailedDescription: [
+      'Problem: Focus time data existed in secure PDFs and Outlook calendars across individual engineers — no automated way to collect, normalize, or visualize it at team level.',
+      'Built modular ETL pipeline: Selenium extracts data from secure PDFs and Outlook → Pandas processes and normalizes → Matplotlib visualizes KPIs in a Tkinter desktop GUI.',
+      'Used multithreading to keep the GUI responsive during data collection — heavy extraction runs in the background while the interface stays interactive.',
+      'Delivered 15% team productivity improvement by making focus time visible and actionable for team leads.',
+    ],
+    metrics: {
+      'Productivity improvement': '15%',
+      'KPI visibility': '100%',
+      'Data collection': 'Fully automated',
+      'Manual reporting': 'Eliminated',
+    }
+  },
+
+  // ── MLOps Platform ─────────────────────────────────────────
+  {
+    title: 'End-to-end MLOps platform for energy consumption prediction',
+    problem: 'Industrial HVAC systems had no ML-based energy forecasting — operators reacted to waste instead of preventing it.',
+    result: '95% forecasting accuracy · predictive load shifting enabled · 3 deployment architectures built and compared.',
+    description: 'Built a production-grade MLOps platform predicting pre-heater energy consumption in automotive paint shop HVAC systems. Covers the full ML lifecycle from data ingestion to cloud deployment — with Terraform-automated infrastructure and three progressively improved AWS deployment architectures.',
+    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['Python', 'FastAPI', 'React', 'TypeScript', 'Docker', 'Docker Compose', 'AWS EC2', 'ALB', 'Nginx', 'Terraform', 'GoDaddy DNS', 'Vite', 'Tailwind CSS'],
+    architecture: 'https://raw.githubusercontent.com/Pavan-Kumar-Adapala/MLOps_project/main/imgs/MLOps_arch.png',
+    github: 'https://github.com/Pavan-Kumar-Adapala/MLOps_project',
+    demo: '#',
+    category: 'MLOps, AWS, Docker, Terraform',
+    detailedDescription: [
+      'Problem: HVAC pre-heater energy consumption in automotive paint shops was unmanaged — no forecasting model existed to enable proactive load shifting or reduce energy waste.',
+      'Built end-to-end ML pipeline: IIoT time-series data ingestion (6862 samples, 2016–2019) → feature engineering on 7 HVAC sensor inputs → batch and one-step-ahead forecasting models → FastAPI inference service.',
+      'Achieved 95% forecasting accuracy — models account for weather-related uncertainties and enable Predictive Energy Management (PEM) for proactive load shifting.',
+      'Containerized frontend (React/Vite) and backend (FastAPI) with Docker. Designed and compared three AWS deployment architectures with ALB, evaluating trade-offs between complexity and maintainability.',
+      'Type 01 — Host-based routing: separate subdomains (ui.pavanclouds.com / api.pavanclouds.com) routed by ALB to individual containers. Simple but port-management complexity.',
+      'Type 02 — Path-based routing: single domain, ALB routes /api/* to backend and /* to frontend. Couples application routing logic to ALB rules.',
+      'Type 03 — Nginx reverse proxy (recommended): ALB routes all traffic to a single Nginx container which proxies internally. Cleanest separation — one ALB target, zero infrastructure coupling to API paths.',
+      'Automated full infrastructure provisioning with Terraform: modular directory structure (modules/ec2, modules/alb, modules/security_groups), S3 remote state with versioning and AES256 encryption, separate dev/prod environments.',
+      'EC2 bootstrap script (install_docker.sh.tpl) clones repo via GitHub PAT, installs Docker, and runs docker-compose — fully automated zero-touch deployment on new instances.',
+    ],
+    metrics: {
+      'Forecast accuracy': '95%',
+      'Deployment architectures': '3 built',
+      'Infrastructure': 'Terraform automated',
+      'Data points': '6,862 samples',
+    }
+  },
+
+  // ── Multitenant Platform ───────────────────────────────────
+  {
+    title: 'Multitenant serverless platform — automated zip processing with full audit trail',
+    problem: 'Organizations needed a shared platform to process uploaded files with per-tenant isolation, validation, and an immutable audit trail — without managing servers.',
+    result: '7-step fully automated pipeline · zero-touch deployment via GitHub Release · immutable DynamoDB audit trail · on-prem data residency via 3 env vars.',
+    description: 'Built an event-driven serverless platform where each GitHub Release triggers Terraform provisioning, Docker build, S3 upload, Lambda validation, ECS Fargate processing, and DynamoDB auditing — fully automated end to end with least-privilege IAM throughout.',
+    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['AWS Lambda', 'ECS Fargate', 'S3', 'DynamoDB', 'ECR', 'Terraform', 'GitHub Actions', 'Python 3.12', 'Docker'],
+    architecture: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    github: 'https://github.com/Pavan-Kumar-Adapala/multitenant-platform',
+    demo: '#',
+    category: 'AWS, Serverless, Terraform, DevOps',
+    detailedDescription: [
+      'Problem: Teams needed to submit zip files for processing with per-tenant isolation, automated validation, and a tamper-proof audit trail — without provisioning or managing servers.',
+      'Built event-driven pipeline: GitHub Release (zip attached) → GitHub Actions → Terraform provisions S3, Lambda, DynamoDB, ECS Cluster, ECR → Docker build/push to ECR → S3 upload with organization-id tag → S3 PutObject triggers Lambda Validator → ECS Fargate processes zip → DynamoDB records every transition.',
+      'Lambda Validator (Python 3.12): reads organization-id tag from S3, validates file size (<500MB) and content-type, writes VALIDATED to DynamoDB with PITR-enabled audit table, triggers ECS Fargate via ecs:RunTask.',
+      'ECS Fargate processor container (non-root user): downloads zip from S3, logs all file contents and stats, writes COMPLETE audit record — three immutable DynamoDB events per run: VALIDATED → PROCESSING_START → COMPLETE.',
+      'Terraform modular structure (modules/s3, modules/dynamodb, modules/iam, modules/lambda) with S3 remote state, state locking, and AES-256 encryption. Least-privilege IAM: Lambda role scoped to specific bucket/table/task ARNs, iam:PassRole conditioned on ecs-tasks.amazonaws.com only.',
+      'Hybrid backbone strategy: all three storage/compute/audit layers can redirect to on-prem equivalents (MinIO, Relay Agent, ScyllaDB) by setting three AWS_ENDPOINT_URL_* environment variables — zero code changes, same Lambda, same processor, same audit schema.',
+      'Destroy workflow: single GitHub Actions trigger runs terraform destroy -auto-approve — full teardown of all provisioned resources without any local tooling.',
+    ],
+    metrics: {
+      'Pipeline steps': '7 automated',
+      'Manual deployment steps': '0',
+      'Audit events per run': '3 immutable',
+      'On-prem config changes': '3 env vars',
+    }
+  },
+];
+
 // ---------------- Projects Component ----------------
 const Projects = () => {
   const ref = useRef(null);
@@ -48,226 +283,15 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('All');
 
-  const categories = ['All', 'Automation', 'AWS', 'CI/CD', 'Monitoring', 'GitOps', 'Linux Administration', 'Serverless', 'DevsecOps', 'Web Application'];
+  const categories = ['All', 'AI', 'MLOps', 'CI/CD', 'Monitoring', 'GitOps', 'Automation', 'AWS', 'Serverless', 'DevSecOps', 'Docker'];
 
-  const projects = [
-
-    // Project 1: GitOps-Driven CI/CD Pipeline for Cloud-Native Web Application
-    {
-      title: 'End-to-End GitOps-Driven CI/CD Pipeline for Cloud-Native Web Application Deployment',
-      description: 'Designed and deployed a GitOps-driven CI/CD pipeline leveraging Argo CD and Kubernetes on AWS EC2. Integrated DevSecOps practices with code quality checks, container vulnerability scanning, and secure networking, while deploying web application in a declarative and automated manner.',
-      image: '/images/gitops_cicd_gen_ani.gif',
-      technologies: ['#'],
-      // technologies: ['GitHub Actions', 'Argo CD', 'AWS ALB', 'AWS EC2', 'Kubernetes', 'Docker', 'SonarQube', 'Trivy', 'Nexus Repository', 'Bash', , 'DNS, NACLs, Security Groups, IAM', 'ReactJS', 'TypeScript', 'Tailwind CSS', 'Nginx'],
-      architecture: '/images/gitops_cicd_gen_ani.gif',
-      github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
-      demo: '/images/gitops.svg',
-      category: 'Web Application, DevSecOps, GitOps, Argo CD, CI/CD, AWS',
-
-      detailedDescription: [
-        'Designed and operated a production-oriented CI/CD platform for a cloud-native web application, focusing on deployment reliability, security, and operational consistency.',
-        'Containerized application components using multi-stage Docker builds and deployed them on a Kubernetes cluster to ensure reproducible and scalable releases.',
-        'Implemented GitOps-based delivery with Argo CD, enabling declarative deployments, automated rollbacks, and environment consistency across releases.',
-        'Architected secure AWS networking (ALB, IAM, DNS, Security Groups) following the principle of least privilege and HTTPS-only access patterns.',
-        'Integrated DevSecOps controls by embedding static code analysis (SonarQube) and container vulnerability scanning (Trivy) into the pipeline to prevent insecure artifacts from reaching production.',
-      ],
-
-      metrics: {
-        CodeQualityImprovement: '35%',
-        DockerImageSizeReduction: '200%',
-      }
-    },
-
-    // Project 2: CI/CD Optimization for ADAS Software Development
-    {
-      title: 'Developed CI/CD Pipeline for Autonomous Parking Software Flashing',
-      description: 'Automated safety-critical ADAS CI/CD pipeline by eliminating manual ECU flashing, improving release reliability, reducing setup time by 40%, and embedding ISO 27001 compliance into production workflows.',
-      image: '/images/ADAS_CICD.png',
-      technologies: ['#'],
-      // technologies: ['Jenkins', 'Grafana', 'JFrog Artifactory', 'Git & Bitbucket', 'JIRA', 'PostgreSQL', 'Python & Bash Scripting', 'RESTAPIs', 'Linux (Ubuntu)'],
-      architecture: '/images/ADAS_CICD.png',
-      github: '#',
-      demo: '#',
-      category: 'ADAS, CI/CD, Automation',
-      detailedDescription: [
-        'Addressed frequent CI/CD failures and release delays in safety-critical ADAS software caused by manual preparation of diagnostic data and inconsistent ECU flashing workflows.',
-        'Implemented Jenkins-based CI/CD pipeline in a distributed hardware–software environment, automating the generation of validated and signed PDX containers directly from versioned binaries and configuration artifacts stored in JFrog Artifactory.',
-        'Integrated hardware dependencies and enforced ISO 27001–aligned security and quality checks, eliminating human error and ensuring consistent, compliant deployments across environments.',
-        'Reduced ECU flashing setup time by 40%, eliminated flashing failures, improved pipeline reliability, and accelerated release cycles while increasing overall engineering productivity.',
-      ],
-      metrics: {
-        FlashingSetupTimeReduction: '40%',
-        SecurityCompliance: 'ISO 27001',
-      }
-    },
-
-    // Project 3: Hybrid Infrastructure Monitoring Stack
-    {
-      title: 'Centralized Monitoring & Performance Optimization for Hybrid Infrastructure',
-      description: 'Built a centralized monitoring and observability platform for hybrid infrastructure, enabling early detection of performance bottlenecks, faster root-cause analysis, and improved system reliability through data-driven insights.',
-      image: 'images/prometheus_hybrid_monitoring_architecture.gif',
-      technologies: ['#'],
-      // technologies: ['Prometheus', 'Grafana', 'VMware', 'AWS', 'OpenVPN', 'Node Exporter', 'Nginx', 'Linux (RHEL 9)', 'Shell/Bash Scripting'],
-      architecture: 'images/prometheus_hybrid_monitoring_architecture.gif',
-      github: 'https://github.com/Pavan-Kumar-Adapala/prometheus_hybrid_monitoring_proj',
-      demo: 'images/prometheus_hybrid_monitoring_architecture.gif',
-      category: 'Monitoring',
-      detailedDescription: [
-        'Built a centralized Prometheus–Grafana observability platform for a hybrid environment spanning AWS VMs, Kubernetes clusters, and on-premise RHEL servers, eliminating fragmented monitoring and blind spots across infrastructure layers.',
-        'Integrated Node Exporter and cAdvisor to collect VM-, container-, and pod-level metrics, enabling correlation of CPU, memory, disk, and workload behavior across cloud and on-prem systems.',
-        'Identified early CPU and memory bottlenecks and proactively optimized Kubernetes resource requests and limits, preventing pod restarts and performance degradation in production.',
-        'Implemented custom dashboards and alerting to enable faster root-cause analysis, reduce MTTR, and improve overall system reliability and operational efficiency.',
-      ],
-      metrics: {
-        OperationalDowntime: 'Significantly reduced',
-        SystemReliability: 'Improved production stability'
-      }
-    },
-
-    // Project 4: Deployment of Django Web Application on AWS
-    // {
-    //   title: 'Deployment of Django Web Application on AWS',
-    //   description: 'Deployed the web application on a scalable 3-tier architecture, implementing Auto Scaling and an Elastic Load Balancer (ELB) to ensure a secure and scalable AWS infrastructure.',
-    //   image: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800',
-    //   technologies: ['AWS (EC2, VPC, IAM, Route 53, Elastic Load Balancer, AutoScaling, RDS, S3, SES, CloudWatch)', 'Git', 'GitHub', 'Jenkins', 'Linux (Ubuntu)', 'Python & Bash scripting', 'Nginx Web Server'],
-    //   architecture: '/images/aws_django.png', 
-    //   // architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/aws_django.png?raw=true',
-    //   github: '#',
-    //   demo: '#',
-    //   category: 'AWS, 3-Tier Architecture',
-    //   detailedDescription: [
-    //     'Designed and deployed a scalable 3-tier AWS architecture to host a Django web application (vehicle quality testing), ensuring high availability and cost efficiency',
-    //     'Configured EC2 Auto Scaling and Load Balancer to optimize performance',
-    //     'Implemented CI/CD pipelines using Jenkins Master-Slave architecture to automate deployments and accelerating release cycles', 
-    //     'Implemented custom monitoring dashboard and alert mechanisum using AWS CloudWatch and SES services, enabling proactive issue resolution',
-    //     'Secured RDS–EC2 data flow using VPC and IAM policies to enforce least-privilege access',
-    //     'Improved query performance by 30% and reduced operational costs by 25% through cloud migration'
-    //   ],
-    //   metrics: {
-    //     uptime: '99.9%',
-    //     operationalcostReduction: '25%',
-    //     queryperformanceImprovement: '30%'
-    //   }
-    // },
-
-    // Project 5: Personal Portfolio CI/CD Pipeline
-    // {
-    //   title: 'End-to-End CI/CD Pipeline for React Application',
-    //   description: 'Implemented an end-to-end CI/CD pipeline for a personal portfolio website to simulate real-world DevOps workflows, using GitHub Actions, Docker, SonarQube, Nexus, AWS EC2, ALB, and GitHub Pages, resulting in automated build, quality checks, artifact management, and seamless deployment to production.',
-    //   image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-    //   technologies: ['GitHub Actions', 'GitHub Pages', 'Docker', 'Docker Compose', 'SonarQube', 'Nexus Repository', 'AWS EC2', 'AWS Application Load Balancer (ALB)', 'AWS IAM', 'Vite', 'React', 'TypeScript', 'Tailwind CSS'],
-    //   architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/CI_CD.png?raw=true',
-    //   github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
-    //   demo: '#',
-    //   category: 'Docker, CI/CD, AWS, SonarQube, Nexus',
-    //   detailedDescription: [
-    //     'Built an end-to-end CI/CD pipeline using GitHub Actions and GitFlow to automate build, quality checks, artifact management, and deployment of a React application to GitHub Pages with a custom domain',
-    //     'Containerized the application using a multi-stage Dockerfile to reduce image size, ensure consistency, and enable reproducible deployments across environments',
-    //     'Integrated SonarQube for static code analysis (SAST) and Nexus Repository for artifact and Docker image hosting, deployed on AWS EC2 with Application Load Balancer for high availability',
-    //     'Outcome: Gained hands-on experience in CI/CD, integrating security tools, and containerizing applications to deliver scalable, production-grade digital solutions that streamline development and deployment workflows'
-    //   ],
-    //   metrics: {
-    //     DeploymentAutomation: '100% via GitHub Actions',
-    //     imageSize: '50% smaller than previous builds',
-    //     securityScans: '100% of builds',
-    //     codeReviewCoverage: '100% of PRs'
-    //   }
-    // },
-
-
-    {
-      title: 'Secure Serverless Website Hosting',
-      description: 'Hosted a static portfolio on AWS S3 with CloudFront integration for fast, secure global delivery.',
-      image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['AWS S3', 'AWS CloudFront', 'AWS IAM', 'Origin Access Identity (OAI)', 'S3 Bucket Policies', 'HTML/CSS/JavaScript', 'Terraform'],
-      architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/AWS_serverless_static_website.png?raw=true',
-      github: 'https://github.com/Pavan-Kumar-Adapala/Portfolio_project_Adapala',
-      demo: '#',
-      category: 'AWS, Serverless',
-      detailedDescription: [
-        'Improved content delivery speed and reliability by hosting the portfolio website on AWS S3 with CloudFront CDN using a secure serverless architecture',
-        'Configured Origin Access Identity (OAI) and S3 bucket policies to enforce secure, restricted access'
-      ],
-      metrics: {
-        loadTimeImprovement: '50%',
-        hostingCost: '<$1/month',
-        uptime: '100%',
-        latency: '<80ms (via CloudFront)',
-        publicAccessRisk: '0% (OAI enforced)',
-        maintenance: '0 server ops required'
-      }
-    },
-    {
-      title: 'Linux System Monitoring and Automation with Bash Scripting',
-      description: 'Developed a suite of Bash scripts to automate Linux system administration tasks such as monitoring, security auditing, user management, log rotation, and Git operations. Designed for scalability and cron-based scheduling to reduce manual overhead in server environments.',
-      image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Bash', 'Linux (Ubuntu, RedHat)', 'cron', 'logrotate', 'system monitoring tools'],
-      architecture: '#',
-      github: 'https://github.com/Pavan-Kumar-Adapala/bash_scripts_for_automation',
-      demo: '#',
-      category: 'Linux Administration',
-      detailedDescription: [
-        'System Monitoring: Alerts on high CPU/memory usage, process/port checks',
-        'Security Auditing: User privilege checks, vulnerability scans',
-        'User Management: Bulk user creation/deletion with home directory cleanup',
-        'Log & Storage Management: Log rotation, large file detection, file comparison',
-      ],
-      metrics: {
-        scriptsCreated: '15+',
-        manualTasksReduced: '70%'
-      }
-    },
-    {
-      title: 'Developed Hardware Management Automation Framework',
-      description: 'Improved traceability and resource management in Bosch EPS2 Department using automation.',
-      image: 'https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Python', 'JIRA REST API', 'Confluence API', 'Seventhings'],
-      architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/hardware_management.png?raw=true',
-      github: '#',  // optional: can be private or internal-only
-      demo: '#',
-      category: 'Automation',
-      detailedDescription: [
-        'Analysed the existing hardware management workflow and optimized JIRA ticket structuring and QR code generation for better tracking',
-        'Developed Python automation scripts integrating JIRA REST API and Confluence REST API to automate hardware tracking and management',
-        'Implemented a scalable solution at the department level, enabling micro-level asset tracking across storage areas and test benches',
-        'Extracted and centralized asset data using Python scripts in Seventhings application, improving interdepartmental visibility and efficiency',
-        'Achieved €15,000 cost savings by reducing manual efforts and enhancing tracking accuracy'
-      ],
-      metrics: {
-        costSaving: '€15,000',
-        manualEffortReduction: '80%',
-        assetTrackingCoverage: '100% (department-wide)'
-      }
-    },
-    {
-    title: 'Python-Based ETL and KPI Dashboard for Team Performance Analysis',
-    description: 'Built a data-driven decision tool to track and improve Bosch EPS2 team performance.',
-    image: 'https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=800',
-    technologies: ['Python (tkinter (GUI), Selenium (Web Automation), Pandas & NumPy (Data Processing), matplotlib (Data Visualization), threading (Multithreading))', 'ETL', 'Modular Programming', 'Linux'],
-    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
-    github: '#',  // private or internal repo, can be omitted
-    demo: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
-    category: 'KPI, ETL Pipeline, Automation',
-    detailedDescription: [
-      'Developed a modular Python GUI with multithreading to automate secure PDF extraction (Selenium), build an ETL pipeline integrating login and Outlook data, and compute Focus Time KPIs', 
-      'Enabled data-driven team insights, improving productivity by 15%',
-    ],
-    metrics: {
-      TeamImprovement: '15%',
-      KPIVisibilityImproved: '100%'
-    }
-  }
-  ];
-
-  // Filtered projects based on selected category
   const filteredProjects = useMemo(() => {
     if (filter === 'All') return projects;
     return projects.filter((p) =>
       p.category.toLowerCase().includes(filter.toLowerCase())
     );
-  }, [filter, projects]);
+  }, [filter]);
 
-  // Entry animation variants for left/right
   const itemVariantsLeft = {
     hidden: { opacity: 0, x: -80 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -286,6 +310,7 @@ const Projects = () => {
   return (
     <section id="projects" ref={ref} className="py-20 bg-gradient-to-br from-gray-800 to-gray-900">
       <div className="container mx-auto px-6">
+
         {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -296,8 +321,12 @@ const Projects = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Featured Projects
           </h2>
+          <p className="text-gray-400 text-lg mb-6">
+            Real problems. Measurable results.
+          </p>
+
           {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -328,65 +357,91 @@ const Projects = () => {
                   initial="hidden"
                   animate="visible"
                   exit={{ opacity: 0, y: 50 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="group bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300"
+                  whileHover={{ y: -8, scale: 1.01 }}
+                  className="group bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300 flex flex-col h-full"
                 >
+                  {/* Image */}
                   <div className="relative overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-44 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-blue-500/80 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {project.category}
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-blue-500/80 text-white px-2 py-1 rounded-full text-xs font-medium">
+                        {project.category.split(',')[0].trim()}
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                  <div className="p-6 flex flex-col flex-1">
+                    {/* Title */}
+                    <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors leading-snug">
                       {project.title}
                     </h3>
 
-                    <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
+                    {/* Problem / Result pills */}
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded-full mt-0.5">
+                          Problem
+                        </span>
+                        <p className="text-gray-400 text-xs leading-relaxed">{project.problem}</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded-full mt-0.5">
+                          Result
+                        </span>
+                        <p className="text-green-400 text-xs leading-relaxed font-medium">{project.result}</p>
+                      </div>
+                    </div>
 
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.technologies.map((tech) => (
+                    {/* Description */}
+                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">{project.description}</p>
+
+                    {/* Tech tags */}
+                    <div className="flex flex-wrap gap-2 mb-5 mt-auto">
+                      {project.technologies.slice(0, 5).map((tech) => (
                         <span
                           key={tech}
-                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30"
+                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-2 py-0.5 rounded-lg text-xs border border-blue-500/30"
                         >
                           {tech}
                         </span>
                       ))}
+                      {project.technologies.length > 5 && (
+                        <span className="text-gray-500 text-xs px-1 py-0.5">
+                          +{project.technologies.length - 5} more
+                        </span>
+                      )}
                     </div>
 
-                    <div className="flex space-x-4">
+                    {/* Actions */}
+                    <div className="flex space-x-4 pt-2 border-t border-gray-700/50">
                       <a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
+                        className="flex items-center space-x-1.5 text-gray-300 hover:text-white transition-colors text-sm"
                       >
-                        <Github size={18} />
+                        <Github size={15} />
                         <span>Code</span>
                       </a>
                       <a
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
+                        className="flex items-center space-x-1.5 text-blue-400 hover:text-blue-300 transition-colors text-sm"
                       >
-                        <Play size={18} />
+                        <Play size={15} />
                         <span>Demo</span>
                       </a>
                       <button
                         onClick={() => setSelectedProject(index)}
-                        className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition-colors"
+                        className="flex items-center space-x-1.5 text-purple-400 hover:text-purple-300 transition-colors text-sm ml-auto"
                       >
-                        <Eye size={18} />
+                        <Eye size={15} />
                         <span>Details</span>
                       </button>
                     </div>
@@ -415,48 +470,59 @@ const Projects = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="p-8">
+                  {/* Modal header */}
                   <div className="flex justify-between items-start mb-6">
-                    <h3 className="text-3xl font-bold text-white">
+                    <h3 className="text-2xl font-bold text-white pr-8 leading-snug">
                       {projects[selectedProject].title}
                     </h3>
                     <button
                       onClick={() => setSelectedProject(null)}
-                      className="text-gray-400 hover:text-white transition-colors"
+                      className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
                     >
                       <X size={24} />
                     </button>
                   </div>
 
-                  {/* Architecture Diagram */}
-                  <div className="mb-8">
-                    {/* <h4 className="text-xl font-semibold text-white mb-4">Architecture Overview</h4> */}
-                    <div className="rounded-lg overflow-hidden border border-gray-600">
-                      <img
-                        src={projects[selectedProject].architecture}
-                        alt={`${projects[selectedProject].title} Architecture`}
-                        className="max-w-full h-auto rounded-lg"
-                      />
+                  {/* Problem / Result — prominent at top */}
+                  <div className="grid md:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4">
+                      <div className="text-xs font-semibold text-red-400 uppercase tracking-wide mb-2">Problem</div>
+                      <p className="text-gray-300 text-sm leading-relaxed">{projects[selectedProject].problem}</p>
+                    </div>
+                    <div className="bg-green-500/5 border border-green-500/20 rounded-xl p-4">
+                      <div className="text-xs font-semibold text-green-400 uppercase tracking-wide mb-2">Result</div>
+                      <p className="text-green-400 text-sm leading-relaxed font-medium">{projects[selectedProject].result}</p>
                     </div>
                   </div>
 
                   {/* Key Metrics */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     {Object.entries(projects[selectedProject].metrics).map(([key, value]) => (
-                      <div key={key} className="bg-gray-700/50 rounded-lg p-4 text-center">
-                        <div className="text-2xl font-bold text-blue-400">{value}</div>
-                        <div className="text-gray-400 text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                      <div key={key} className="bg-gray-700/50 rounded-xl p-4 text-center">
+                        <div className="text-xl font-bold text-blue-400 mb-1">{value}</div>
+                        <div className="text-gray-400 text-xs capitalize leading-tight">
+                          {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                        </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Detailed Description */}
-                  <div className="mb-8">
-                    {/* <h4 className="text-xl font-semibold text-white mb-4">
-                      Implementation Details</h4> */}
+                  {/* Architecture image */}
+                  <div className="mb-6 rounded-xl overflow-hidden border border-gray-600">
+                    <img
+                      src={projects[selectedProject].architecture}
+                      alt={`${projects[selectedProject].title} architecture`}
+                      className="w-full h-auto"
+                    />
+                  </div>
+
+                  {/* Implementation details */}
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-white mb-4">How it was built</h4>
                     <ul className="space-y-3">
                       {projects[selectedProject].detailedDescription.map((item, i) => (
-                        <li key={i} className="text-gray-300 flex items-start">
-                          <span className="text-blue-400 mr-3 mt-1">•</span>
+                        <li key={i} className="text-gray-300 text-sm flex items-start leading-relaxed">
+                          <span className="text-blue-400 mr-3 mt-1 flex-shrink-0">•</span>
                           {item}
                         </li>
                       ))}
@@ -464,13 +530,13 @@ const Projects = () => {
                   </div>
 
                   {/* Technologies */}
-                  <div className="mb-8">
-                    <h4 className="text-xl font-semibold text-white mb-4">Technologies Used</h4>
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-white mb-3">Technologies used</h4>
                     <div className="flex flex-wrap gap-2">
                       {projects[selectedProject].technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-3 py-2 rounded-lg text-sm border border-blue-500/30"
+                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 px-3 py-1.5 rounded-lg text-sm border border-blue-500/30"
                         >
                           {tech}
                         </span>
@@ -478,25 +544,25 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
+                  {/* Action buttons */}
                   <div className="flex space-x-4">
                     <a
                       href={projects[selectedProject].github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors"
+                      className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-5 py-2.5 rounded-xl transition-colors text-sm"
                     >
-                      <Github size={20} />
-                      <span>View Code</span>
+                      <Github size={18} />
+                      <span>View code</span>
                     </a>
                     <a
                       href={projects[selectedProject].demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+                      className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl transition-colors text-sm"
                     >
-                      <ExternalLink size={20} />
-                      <span>Live Demo</span>
+                      <ExternalLink size={18} />
+                      <span>Live demo</span>
                     </a>
                   </div>
                 </div>
