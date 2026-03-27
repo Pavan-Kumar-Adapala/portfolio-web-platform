@@ -75,8 +75,8 @@ const projects = [
   // ── MLOps Platform ─────────────────────────────────────────
   {
     title: 'End-to-end MLOps platform for energy consumption prediction',
-    problem: 'Industrial HVAC systems had no ML-based energy forecasting — operators reacted to waste instead of preventing it.',
-    result: '95% forecasting accuracy · predictive load shifting enabled · 3 deployment architectures built and compared.',
+    problem: 'Industrial air systems had unmanaged energy consumption in manufacturing clean rooms — no deployment pipeline existed to optimize load shifting and reduce waste using Data-Driven solutions.',
+    result: '85% prediction accuracy · predictive load shifting enabled · 3 deployment architectures built and compared.',
     description: 'Built a production-grade MLOps platform predicting energy consumption in clean room air systems. Covers the full ML lifecycle from data ingestion to cloud deployment — with Terraform-automated infrastructure and three progressively improved AWS deployment architectures.',
     image: 'images/MLOps_arch.png',
     technologies: ['Python', 'FastAPI', 'React', 'TypeScript', 'Docker', 'Docker Compose', 'AWS EC2', 'ALB', 'Nginx', 'Terraform', 'GoDaddy DNS', 'Vite', 'Tailwind CSS'],
@@ -85,7 +85,7 @@ const projects = [
     demo: '#',
     category: 'MLOps, Cloud, DevOps',
     detailedDescription: [
-      'Problem: HVAC pre-heater energy consumption in clean rooms was unmanaged — no forecasting model existed to enable proactive load shifting or reduce energy waste.',
+      'Problem: Air systems energy consumption in clean rooms was unmanaged — predictive model enable proactive load shifting or reduce energy waste.',
       'Built end-to-end ML pipeline: IIoT time-series data ingestion → EDA → feature engineering → prediction models → FastAPI inference service.',
       'Achieved 85% prediction accuracy — models account for weather-related uncertainties and enable Predictive Energy Management (PEM) for proactive load shifting.',
       'Containerized frontend (React/Vite) and backend (FastAPI) with Docker. Designed and compared three AWS deployment architectures with ALB, evaluating trade-offs between complexity and maintainability.',
