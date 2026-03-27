@@ -43,17 +43,18 @@ const TiltCard = ({ children }) => {
 
 // ---------------- Projects Data ----------------
 const projects = [
+  // ── RAG Chatbot ─────────────────────────────────────────
   {
     title: 'AI-powered portfolio chatbot with RAG system',
     problem: 'Static portfolios force visitors to hunt for answers — most leave before finding them.',
     result: '0 hallucinations · 3–4 min response reduced to ~1 min via Singleton pattern.',
     description: 'Built a resume-grounded chatbot so hiring managers can ask natural questions and get factual answers instantly. RAG prevents LLM hallucination by grounding every response in actual resume chunks.',
-    image: '/images/rag_chatbot.png',
+    image: '/images/chatbot_before_after.png',
     technologies: ['FastAPI', 'LangChain', 'ChromaDB', 'Ollama · Llama 3.1', 'React', 'Docker', 'AWS EC2'],
-    architecture: '/images/rag_chatbot.png',
+    architecture: '/images/rag_chatbot_architecture.png',
     github: 'https://github.com/Pavan-Kumar-Adapala/portfolio-web-platform',
     demo: '#',
-    category: 'AI, RAG, DevOps, Docker',
+    category: 'AI, RAG, DevOps, Cloud',
     detailedDescription: [
       'Problem: LLMs hallucinate — a plain LLM answering resume questions would fabricate answers. RAG solves this by grounding every response in actual document chunks.',
       'Built full RAG pipeline: PDF ingestion → recursive text splitting (740-char chunks) → qwen3-embedding:4b embeddings → ChromaDB vector store → top-4 similarity retrieval → Llama 3.1 generation.',
@@ -70,150 +71,6 @@ const projects = [
       'Re-index trigger': 'Only on PDF change',
     }
   },
-  {
-    title: 'End-to-end GitOps CI/CD pipeline for cloud-native deployment',
-    problem: 'Manual deployments had no security gates — insecure images could reach production undetected.',
-    result: '0 manual steps · 100% builds scanned · 35% code quality improvement · 2× smaller images.',
-    description: 'Designed a fully automated GitOps pipeline eliminating human error from release cycles while embedding DevSecOps controls — SonarQube and Trivy — at every stage before production.',
-    image: '/images/gitops_cicd_gen_ani.gif',
-    technologies: ['GitHub Actions', 'Argo CD', 'Kubernetes', 'Docker', 'SonarQube', 'Trivy', 'Nexus', 'AWS ALB', 'Nginx'],
-    architecture: '/images/gitops_cicd_gen_ani.gif',
-    github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
-    demo: '/images/gitops.svg',
-    category: 'Web Application, DevSecOps, GitOps, CI/CD, AWS',
-    detailedDescription: [
-      'Problem: Deployment had no automated security checks — insecure container images and code with vulnerabilities could be deployed without any gate.',
-      'Embedded SonarQube (SAST) and Trivy (container scanning) as pipeline gates — insecure artifacts are rejected automatically before they can reach any environment.',
-      'Implemented GitOps delivery with Argo CD: every deployment is a Git commit, enabling one-command declarative rollback and full audit trail.',
-      'Reduced Docker image size by 200% using multi-stage builds — smaller attack surface and faster pull times in production.',
-      'Architected AWS networking with ALB, IAM least-privilege, and HTTPS-only access following security best practices.',
-    ],
-    metrics: {
-      'Code quality improvement': '35%',
-      'Image size reduction': '200%',
-      'Security scan coverage': '100%',
-      'Manual deploy steps': '0',
-    }
-  },
-  {
-    title: 'CI/CD pipeline for safety-critical ADAS software',
-    problem: 'Manual ECU flashing setup caused frequent build failures and delayed releases for an autonomous parking system.',
-    result: '40% setup time reduction · 0 flashing failures · ISO 27001 compliant pipeline.',
-    description: 'Automated the full ECU flashing pipeline at Robert Bosch for an autonomous parking system — eliminating manual errors while enforcing ISO 27001 security compliance automatically.',
-    image: '/images/ADAS_CICD.png',
-    technologies: ['Jenkins', 'JFrog Artifactory', 'Grafana', 'PostgreSQL', 'Python', 'Bash', 'Bitbucket', 'JIRA'],
-    architecture: '/images/ADAS_CICD.png',
-    github: '#',
-    demo: '#',
-    category: 'ADAS, CI/CD, Automation',
-    detailedDescription: [
-      'Problem: Engineers manually prepared PDX containers for ECU flashing — a time-consuming, error-prone step that caused build failures and delayed releases for a safety-critical system.',
-      'Automated PDX container generation directly from versioned binaries stored in JFrog Artifactory — validated, signed, and ready for flashing without any manual step.',
-      'Integrated ISO 27001-aligned security and quality checks as pipeline gates — compliance is enforced automatically, not audited after the fact.',
-      'Reduced setup time by 40%, eliminated all flashing failures, and accelerated release cycles for a safety-critical automotive control system.',
-    ],
-    metrics: {
-      'Setup time reduction': '40%',
-      'Flashing failures': '0',
-      'Compliance': 'ISO 27001',
-      'Manual steps eliminated': '100%',
-    }
-  },
-  {
-    title: 'Centralized observability platform for hybrid infrastructure',
-    problem: 'Fragmented monitoring across AWS, Kubernetes, and on-prem RHEL meant incidents were found by users, not engineers.',
-    result: 'Proactively caught CPU/memory bottlenecks before pod restarts. MTTR significantly reduced.',
-    description: 'Built a unified Prometheus-Grafana observability stack across AWS VMs, Kubernetes clusters, and on-premise RHEL servers — making infrastructure visible at every layer from a single dashboard.',
-    image: 'images/prometheus_hybrid_monitoring_architecture.gif',
-    technologies: ['Prometheus', 'Grafana', 'Node Exporter', 'cAdvisor', 'AWS', 'VMware', 'OpenVPN', 'Nginx', 'RHEL 9'],
-    architecture: 'images/prometheus_hybrid_monitoring_architecture.gif',
-    github: 'https://github.com/Pavan-Kumar-Adapala/prometheus_hybrid_monitoring_proj',
-    demo: 'images/prometheus_hybrid_monitoring_architecture.gif',
-    category: 'Monitoring',
-    detailedDescription: [
-      'Problem: AWS VMs, Kubernetes pods, and on-premise RHEL servers had separate monitoring setups — correlating an incident across all three was manual and slow. Bottlenecks were invisible until they caused outages.',
-      'Deployed Prometheus with Node Exporter and cAdvisor across all environments — single pane of glass for CPU, memory, disk, and container metrics.',
-      'Identified CPU and memory bottlenecks proactively — optimized Kubernetes resource requests and limits before pod restarts occurred in production.',
-      'Custom dashboards and alerting enabled root-cause analysis in minutes instead of hours, significantly reducing MTTR and improving production stability.',
-    ],
-    metrics: {
-      'Infrastructure layers unified': '3',
-      'MTTR': 'Significantly reduced',
-      'Production stability': 'Improved',
-      'Alert coverage': '100% of services',
-    }
-  },
-  {
-    title: 'Secure serverless static website hosting on AWS',
-    problem: 'Static sites do not need servers — yet most setups pay for them and accept unnecessary risk.',
-    result: '<$1/month cost · <80ms global latency · 0% public S3 access risk · 0 server ops.',
-    description: 'Deployed a zero-maintenance, sub-dollar-per-month hosting solution using S3 and CloudFront with enforced Origin Access Identity — no server, no ops, no exposure.',
-    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-    technologies: ['AWS S3', 'AWS CloudFront', 'AWS IAM', 'Origin Access Identity', 'Terraform'],
-    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/AWS_serverless_static_website.png?raw=true',
-    github: 'https://github.com/Pavan-Kumar-Adapala/Portfolio_project_Adapala',
-    demo: '#',
-    category: 'AWS, Serverless',
-    detailedDescription: [
-      'Configured Origin Access Identity (OAI) and S3 bucket policies to ensure the bucket is never publicly accessible — all access flows through CloudFront only, eliminating direct S3 exposure.',
-      'CloudFront CDN delivers content globally at under 80ms latency while handling caching, compression, and HTTPS termination.',
-      'Infrastructure provisioned with Terraform — reproducible, version-controlled, zero manual configuration drift.',
-    ],
-    metrics: {
-      'Hosting cost': '<$1/month',
-      'Global latency': '<80ms',
-      'Public access risk': '0%',
-      'Server ops': '0',
-    }
-  },
-  {
-    title: 'Hardware asset management automation at Bosch',
-    problem: '€15,000 of equipment was unaccounted for annually due to manual, inconsistent asset tracking across the EPS2 department.',
-    result: '€15,000 cost savings · 80% manual effort reduction · 100% department-wide coverage.',
-    description: 'Built Python automation integrating JIRA and Confluence APIs to track hardware assets from acquisition to retirement across all storage areas and test benches at Robert Bosch.',
-    image: 'https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=800',
-    technologies: ['Python', 'JIRA REST API', 'Confluence API', 'Seventhings'],
-    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/hardware_management.png?raw=true',
-    github: '#',
-    demo: '#',
-    category: 'Automation',
-    detailedDescription: [
-      'Problem: No standardized QR code system, no cross-departmental visibility, and no automated reconciliation — assets left labs without any record.',
-      'Built Python automation integrating JIRA REST API and Confluence API to track assets from acquisition to retirement across all storage areas and test benches.',
-      'Implemented micro-level tracking in Seventhings — each asset has a unique identity tied to its physical location, visible across departments.',
-      'Result: €15,000 annual savings, 80% reduction in manual tracking effort, 100% coverage across the entire department.',
-    ],
-    metrics: {
-      'Cost savings': '€15,000',
-      'Manual effort reduction': '80%',
-      'Asset coverage': '100%',
-      'Tracking accuracy': 'Real-time',
-    }
-  },
-  {
-    title: 'Python ETL pipeline and KPI dashboard for team performance',
-    problem: 'Focus time data was buried in siloed PDFs and calendars — team leads had no visibility into productivity.',
-    result: '15% productivity improvement · 100% KPI visibility · fully automated data collection.',
-    description: 'Built a modular ETL pipeline with Selenium-based extraction, Pandas processing, and a Tkinter desktop dashboard — turning scattered focus time data into actionable team insights at Robert Bosch.',
-    image: 'https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=800',
-    technologies: ['Python', 'Tkinter', 'Selenium', 'Pandas', 'NumPy', 'Matplotlib', 'ETL', 'Linux'],
-    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
-    github: '#',
-    demo: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
-    category: 'KPI, ETL Pipeline, Automation',
-    detailedDescription: [
-      'Problem: Focus time data existed in secure PDFs and Outlook calendars across individual engineers — no automated way to collect, normalize, or visualize it at team level.',
-      'Built modular ETL pipeline: Selenium extracts data from secure PDFs and Outlook → Pandas processes and normalizes → Matplotlib visualizes KPIs in a Tkinter desktop GUI.',
-      'Used multithreading to keep the GUI responsive during data collection — heavy extraction runs in the background while the interface stays interactive.',
-      'Delivered 15% team productivity improvement by making focus time visible and actionable for team leads.',
-    ],
-    metrics: {
-      'Productivity improvement': '15%',
-      'KPI visibility': '100%',
-      'Data collection': 'Fully automated',
-      'Manual reporting': 'Eliminated',
-    }
-  },
 
   // ── MLOps Platform ─────────────────────────────────────────
   {
@@ -221,12 +78,12 @@ const projects = [
     problem: 'Industrial HVAC systems had no ML-based energy forecasting — operators reacted to waste instead of preventing it.',
     result: '95% forecasting accuracy · predictive load shifting enabled · 3 deployment architectures built and compared.',
     description: 'Built a production-grade MLOps platform predicting pre-heater energy consumption in automotive paint shop HVAC systems. Covers the full ML lifecycle from data ingestion to cloud deployment — with Terraform-automated infrastructure and three progressively improved AWS deployment architectures.',
-    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'images/MLOps_arch.png',
     technologies: ['Python', 'FastAPI', 'React', 'TypeScript', 'Docker', 'Docker Compose', 'AWS EC2', 'ALB', 'Nginx', 'Terraform', 'GoDaddy DNS', 'Vite', 'Tailwind CSS'],
-    architecture: 'https://raw.githubusercontent.com/Pavan-Kumar-Adapala/MLOps_project/main/imgs/MLOps_arch.png',
+    architecture: 'images/MLOps_arch.png',
     github: 'https://github.com/Pavan-Kumar-Adapala/MLOps_project',
     demo: '#',
-    category: 'MLOps, AWS, Docker, Terraform',
+    category: 'MLOps, Cloud, DevOps',
     detailedDescription: [
       'Problem: HVAC pre-heater energy consumption in automotive paint shops was unmanaged — no forecasting model existed to enable proactive load shifting or reduce energy waste.',
       'Built end-to-end ML pipeline: IIoT time-series data ingestion (6862 samples, 2016–2019) → feature engineering on 7 HVAC sensor inputs → batch and one-step-ahead forecasting models → FastAPI inference service.',
@@ -252,12 +109,12 @@ const projects = [
     problem: 'Organizations needed a shared platform to process uploaded files with per-tenant isolation, validation, and an immutable audit trail — without managing servers.',
     result: '7-step fully automated pipeline · zero-touch deployment via GitHub Release · immutable DynamoDB audit trail · on-prem data residency via 3 env vars.',
     description: 'Built an event-driven serverless platform where each GitHub Release triggers Terraform provisioning, Docker build, S3 upload, Lambda validation, ECS Fargate processing, and DynamoDB auditing — fully automated end to end with least-privilege IAM throughout.',
-    image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'images/multitenant_pipeline_stages.png',
     technologies: ['AWS Lambda', 'ECS Fargate', 'S3', 'DynamoDB', 'ECR', 'Terraform', 'GitHub Actions', 'Python 3.12', 'Docker'],
-    architecture: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+    architecture: 'images/multitenant_system_arch.png',
     github: 'https://github.com/Pavan-Kumar-Adapala/multitenant-platform',
     demo: '#',
-    category: 'AWS, Serverless, Terraform, DevOps',
+    category: 'Cloud, Serverless, DevOps',
     detailedDescription: [
       'Problem: Teams needed to submit zip files for processing with per-tenant isolation, automated validation, and a tamper-proof audit trail — without provisioning or managing servers.',
       'Built event-driven pipeline: GitHub Release (zip attached) → GitHub Actions → Terraform provisions S3, Lambda, DynamoDB, ECS Cluster, ECR → Docker build/push to ECR → S3 upload with organization-id tag → S3 PutObject triggers Lambda Validator → ECS Fargate processes zip → DynamoDB records every transition.',
@@ -274,6 +131,163 @@ const projects = [
       'On-prem config changes': '3 env vars',
     }
   },
+
+  // ── GitOps CI/CD ─────────────────────────────────────────
+  {
+    title: 'End-to-end GitOps CI/CD pipeline for cloud-native deployment',
+    problem: 'Manual deployments had no security gates — insecure images could reach production undetected.',
+    result: '0 manual steps · 100% builds scanned · 35% code quality improvement · 2× smaller images.',
+    description: 'Designed a fully automated GitOps pipeline eliminating human error from release cycles while embedding DevSecOps controls — SonarQube and Trivy — at every stage before production.',
+    image: '/images/gitops_cicd_gen_ani.gif',
+    technologies: ['GitHub Actions', 'Argo CD', 'Kubernetes', 'Docker', 'SonarQube', 'Trivy', 'Nexus', 'AWS ALB', 'Nginx'],
+    architecture: '/images/gitops_cicd_gen_ani.gif',
+    github: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation',
+    demo: '/images/gitops.svg',
+    category: 'Web Application, DevOps, GitOps, CI/CD, Cloud',
+    detailedDescription: [
+      'Problem: Deployment had no automated security checks — insecure container images and code with vulnerabilities could be deployed without any gate.',
+      'Embedded SonarQube (SAST) and Trivy (container scanning) as pipeline gates — insecure artifacts are rejected automatically before they can reach any environment.',
+      'Implemented GitOps delivery with Argo CD: every deployment is a Git commit, enabling one-command declarative rollback and full audit trail.',
+      'Reduced Docker image size by 200% using multi-stage builds — smaller attack surface and faster pull times in production.',
+      'Architected AWS networking with ALB, IAM least-privilege, and HTTPS-only access following security best practices.',
+    ],
+    metrics: {
+      'Code quality improvement': '35%',
+      'Image size reduction': '200%',
+      'Security scan coverage': '100%',
+      'Manual deploy steps': '0',
+    }
+  },
+
+  // ── ADAS CI/CD Pipeline ─────────────────────────────────
+  {
+    title: 'CI/CD pipeline for safety-critical ADAS software',
+    problem: 'Manual ECU flashing setup caused frequent build failures and delayed releases for an autonomous parking system.',
+    result: '40% setup time reduction · 0 flashing failures · ISO 27001 compliant pipeline.',
+    description: 'Automated the full ECU flashing pipeline at Robert Bosch for an autonomous parking system — eliminating manual errors while enforcing ISO 27001 security compliance automatically.',
+    image: '/images/ADAS_CICD.png',
+    technologies: ['Jenkins', 'JFrog Artifactory', 'Grafana', 'PostgreSQL', 'Python', 'Bash', 'Bitbucket', 'JIRA'],
+    architecture: '/images/ADAS_CICD.png',
+    github: '#',
+    demo: '#',
+    category: 'ADAS, CI/CD, Automation',
+    detailedDescription: [
+      'Problem: Engineers manually prepared PDX containers for ECU flashing — a time-consuming, error-prone step that caused build failures and delayed releases for a safety-critical system.',
+      'Automated PDX container generation directly from versioned binaries stored in JFrog Artifactory — validated, signed, and ready for flashing without any manual step.',
+      'Integrated ISO 27001-aligned security and quality checks as pipeline gates — compliance is enforced automatically, not audited after the fact.',
+      'Reduced setup time by 40%, eliminated all flashing failures, and accelerated release cycles for a safety-critical automotive control system.',
+    ],
+    metrics: {
+      'Setup time reduction': '40%',
+      'Flashing failures': '0',
+      'Compliance': 'ISO 27001',
+      'Manual steps eliminated': '100%',
+    }
+  },
+
+  // ── Prometheus Hybrid Monitoring ─────────────────────────
+  {
+    title: 'Centralized observability platform for hybrid infrastructure',
+    problem: 'Fragmented monitoring across AWS, Kubernetes, and on-prem RHEL meant incidents were found by users, not engineers.',
+    result: 'Proactively caught CPU/memory bottlenecks before pod restarts. MTTR significantly reduced.',
+    description: 'Built a unified Prometheus-Grafana observability stack across AWS VMs, Kubernetes clusters, and on-premise RHEL servers — making infrastructure visible at every layer from a single dashboard.',
+    image: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    technologies: ['Prometheus', 'Grafana', 'Node Exporter', 'cAdvisor', 'AWS', 'VMware', 'OpenVPN', 'Nginx', 'RHEL 9'],
+    architecture: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    github: 'https://github.com/Pavan-Kumar-Adapala/prometheus_hybrid_monitoring_proj',
+    demo: 'images/prometheus_hybrid_monitoring_architecture.gif',
+    category: 'Monitoring, DevOps, Hybrid',
+    detailedDescription: [
+      'Problem: AWS VMs, Kubernetes pods, and on-premise RHEL servers had separate monitoring setups — correlating an incident across all three was manual and slow. Bottlenecks were invisible until they caused outages.',
+      'Deployed Prometheus with Node Exporter and cAdvisor across all environments — single pane of glass for CPU, memory, disk, and container metrics.',
+      'Identified CPU and memory bottlenecks proactively — optimized Kubernetes resource requests and limits before pod restarts occurred in production.',
+      'Custom dashboards and alerting enabled root-cause analysis in minutes instead of hours, significantly reducing MTTR and improving production stability.',
+    ],
+    metrics: {
+      'Infrastructure layers unified': '3',
+      'MTTR': 'Significantly reduced',
+      'Production stability': 'Improved',
+      'Alert coverage': '100% of services',
+    }
+  },
+
+  // ── Serverless Static Hosting ─────────────────────────
+  {
+    title: 'Secure serverless static website hosting on AWS',
+    problem: 'Static sites do not need servers — yet most setups pay for them and accept unnecessary risk.',
+    result: '<$1/month cost · <80ms global latency · 0% public S3 access risk · 0 server ops.',
+    description: 'Deployed a zero-maintenance, sub-dollar-per-month hosting solution using S3 and CloudFront with enforced Origin Access Identity — no server, no ops, no exposure.',
+    image: 'images/aws_static_hosting_architecture.png',
+    technologies: ['AWS S3', 'AWS CloudFront', 'AWS IAM', 'Origin Access Identity', 'Terraform'],
+    architecture: 'images/serverless_arch.svg',
+    github: 'https://github.com/Pavan-Kumar-Adapala/Portfolio_project_Adapala',
+    demo: '#',
+    category: 'Cloud, Serverless, DevOps',
+    detailedDescription: [
+      'Configured Origin Access Identity (OAI) and S3 bucket policies to ensure the bucket is never publicly accessible — all access flows through CloudFront only, eliminating direct S3 exposure.',
+      'CloudFront CDN delivers content globally at under 80ms latency while handling caching, compression, and HTTPS termination.',
+      'Infrastructure provisioned with Terraform — reproducible, version-controlled, zero manual  drift.',
+    ],
+    metrics: {
+      'Hosting cost': '<$1/month',
+      'Global latency': '<80ms',
+      'Public access risk': '0%',
+      'Server ops': '0',
+    }
+  },
+
+  // ── Hardware Asset Management ─────────────────────────
+  {
+    title: 'Hardware asset management automation at Bosch',
+    problem: '€15,000 of equipment was unaccounted for annually due to manual, inconsistent asset tracking across the EPS2 department.',
+    result: '€15,000 cost savings · 80% manual effort reduction · 100% configurationdepartment-wide coverage.',
+    description: 'Built Python automation integrating JIRA and Confluence APIs to track hardware assets from acquisition to retirement across all storage areas and test benches at Robert Bosch.',
+    image: 'https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['Python', 'JIRA REST API', 'Confluence API', 'Seventhings'],
+    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/hardware_management.png?raw=true',
+    github: '#',
+    demo: '#',
+    category: 'Data Engineering, Automation',
+    detailedDescription: [
+      'Problem: No standardized QR code system, no cross-departmental visibility, and no automated reconciliation — assets left labs without any record.',
+      'Built Python automation integrating JIRA REST API and Confluence API to track assets from acquisition to retirement across all storage areas and test benches.',
+      'Implemented micro-level tracking in Seventhings — each asset has a unique identity tied to its physical location, visible across departments.',
+      'Result: €15,000 annual savings, 80% reduction in manual tracking effort, 100% coverage across the entire department.',
+    ],
+    metrics: {
+      'Cost savings': '€15,000',
+      'Manual effort reduction': '80%',
+      'Asset coverage': '100%',
+      'Tracking accuracy': 'Real-time',
+    }
+  },
+
+  // ── Python ETL Pipeline & Dashboard ─────────────────────────
+  {
+    title: 'Python ETL pipeline and KPI dashboard for team performance',
+    problem: 'Focus time data was buried in siloed PDFs and calendars — team leads had no visibility into productivity.',
+    result: '15% productivity improvement · 100% KPI visibility · fully automated data collection.',
+    description: 'Built a modular ETL pipeline with Selenium-based extraction, Pandas processing, and a Tkinter desktop dashboard — turning scattered focus time data into actionable team insights at Robert Bosch.',
+    image: 'https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&w=800',
+    technologies: ['Python', 'Tkinter', 'Selenium', 'Pandas', 'NumPy', 'Matplotlib', 'ETL', 'Linux'],
+    architecture: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
+    github: '#',
+    demo: 'https://github.com/Pavan-Kumar-Adapala/Personal_portfolio_3d_animation_Images_files/blob/Prod/images/FoucsTime_animation.gif?raw=true',
+    category: 'KPI, Data Engineering, Automation',
+    detailedDescription: [
+      'Problem: Focus time data existed in secure PDFs and Outlook calendars across individual engineers — no automated way to collect, normalize, or visualize it at team level.',
+      'Built modular ETL pipeline: Selenium extracts data from secure PDFs and Outlook → Pandas processes and normalizes → Matplotlib visualizes KPIs in a Tkinter desktop GUI.',
+      'Used multithreading to keep the GUI responsive during data collection — heavy extraction runs in the background while the interface stays interactive.',
+      'Delivered 15% team productivity improvement by making focus time visible and actionable for team leads.',
+    ],
+    metrics: {
+      'Productivity improvement': '15%',
+      'KPI visibility': '100%',
+      'Data collection': 'Fully automated',
+      'Manual reporting': 'Eliminated',
+    }
+  },
+
 ];
 
 // ---------------- Projects Component ----------------
@@ -283,7 +297,7 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('All');
 
-  const categories = ['All', 'AI', 'MLOps', 'CI/CD', 'Monitoring', 'GitOps', 'Automation', 'AWS', 'Serverless', 'DevSecOps', 'Docker'];
+  const categories = ['All', 'Data Engineering', 'AI', 'RAG', 'MLOps', 'Cloud', 'Hybrid','Serverless', 'DevOps', 'Monitoring', 'GitOps', 'Automation'];
 
   const filteredProjects = useMemo(() => {
     if (filter === 'All') return projects;
