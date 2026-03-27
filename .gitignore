@@ -26,3 +26,4 @@ dist-ssr
 *.pyc 
 __pycache__/ 
 db/indexed_files.json
+.Projects.tsx
