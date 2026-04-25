@@ -8,6 +8,21 @@ const Experience = () => {
 
   const experiences = [
     {
+      title: 'Junior MLOps Engineer',
+      company: 'Claro Software Solutions Pvt. Ltd',
+      location: 'Hyderabad, India',
+      period: '11/2024 - 10/2025',
+      description: [
+        'Designed and maintained end-to-end ML pipelines using tools such as MLflow and DVC for experiment tracking, model versioning, and reproducible training workflows across multiple projects.',
+
+        'Automated model deployment and retraining workflows using CI/CD pipelines (GitHub Actions / Jenkins), reducing manual intervention and improving time-to-production for new model versions by 40%.',
+
+        'Monitored deployed models for data drift and performance degradation using custom dashboards and alerting, ensuring model reliability in production environments.',
+
+        'Collaborated with data science and software engineering teams to containerize ML workloads using Docker and orchestrate deployments on Kubernetes, enabling scalable and consistent inference services.',
+      ],
+    },
+    {
       title: 'Data Analyst',
       company: 'Dürr Systems AG',
       location: 'Bietigheim-Bissingen, Germany',
@@ -39,17 +54,19 @@ const Experience = () => {
       // achievements: '30% reduction in debugging time, 15% improvement in team productivity'
     },
     {
-      title: 'Trainee DevOps Engineer',
-      company: 'Ibexlabs Cloud Consulting Pvt. Ltd.',
+      title: 'DevOps Engineer',
+      company: 'Claro Software Solutions Pvt. Ltd',
       location: 'Hyderabad, India',
-      period: '04/2021 - 09/2021',
+      period: '09/2019 - 08/2021',
       description: [
-        'Provisioned and managed AWS infrastructure using Infrastructure as Code (IaC)-Terraform and CloudFormation to support development and operations teams, ensuring scalable, repeatable deployments.',
-        'Developed custom CloudWatch dashboards and alerting systems by integrating open-source monitoring agents, enabling proactive application management, and reducing downtime.',
-        'Documented troubleshooting procedures in Confluence, enabling faster resolution of recurring issues and promoting team knowledge sharing.'
+        'Architected and managed cloud infrastructure on AWS using Terraform and Ansible, enforcing infrastructure-as-code (IaC) practices that reduced provisioning time by 35% and ensured environment consistency across dev, staging, and production.',
+        
+        'Built and maintained Jenkins-based CI/CD pipelines for microservices applications, integrating automated unit, integration, and smoke test stages to improve release quality and deployment frequency.',
+        
+        'Implemented centralized logging and monitoring solutions using the ELK Stack (Elasticsearch, Logstash, Kibana) and CloudWatch, enabling real-time visibility into application health and reducing mean time to resolution (MTTR).',
+        
+        'Containerized legacy applications using Docker and managed container orchestration with Kubernetes, improving resource utilization and enabling zero-downtime deployments.',
       ],
-      // technologies: ['AWS', 'Python', 'Bash', 'Terraform', 'Ansible', 'Git & GitHub'],
-      // achievements: 'Managing and monitoring client cloud solutions'
     },
     {
       title: 'Trainee Cloud Engineer',
