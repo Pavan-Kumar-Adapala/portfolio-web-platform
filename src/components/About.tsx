@@ -84,7 +84,7 @@ const About = () => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-gray-300 text-lg leading-relaxed"
               >
-                DevOps & MLOps Engineer with 3 years of experience delivering scalable, automated cloud and ML platforms that drive measurable business outcomes.
+                DevOps & MLOps Engineer with 5 years of experience delivering scalable, automated cloud and ML platforms that drive measurable business outcomes.
               </motion.p>
 
               <motion.p
