@@ -23,7 +23,7 @@ const Experience = () => {
       ],
     },
     {
-      title: 'Data Analyst',
+      title: 'Data Scientist (Master Thesis)',
       company: 'Dürr Systems AG',
       location: 'Bietigheim-Bissingen, Germany',
       period: '02/2024 - 07/2024',
